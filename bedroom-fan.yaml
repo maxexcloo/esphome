@@ -96,6 +96,18 @@ sensor:
           call.perform();
     pin_a: GPIO22
     pin_b: GPIO23
+  - platform: uptime
+    disabled_by_default: true
+    entity_category: diagnostic
+    id: sys_uptime
+    name: Uptime
+    update_interval: 60s
+  - platform: wifi_signal
+    disabled_by_default: true
+    entity_category: diagnostic
+    id: wifi_signal_db
+    name: WiFi Signal
+    update_interval: 60s
 
 spi:
   clk_pin: GPIO19
