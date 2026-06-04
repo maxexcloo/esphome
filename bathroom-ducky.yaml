@@ -181,8 +181,6 @@ number:
     optimistic: true
     restore_value: true
     step: 1
-    unit_of_measurement: cm
-    update_interval: never
   - platform: template
     device_class: distance
     entity_category: config
@@ -196,8 +194,6 @@ number:
     optimistic: true
     restore_value: true
     step: 1
-    unit_of_measurement: cm
-    update_interval: never
   - platform: template
     device_class: distance
     entity_category: config
@@ -211,8 +207,6 @@ number:
     optimistic: true
     restore_value: true
     step: 1
-    unit_of_measurement: cm
-    update_interval: never
   - platform: template
     device_class: distance
     entity_category: config
