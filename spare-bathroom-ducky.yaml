@@ -1,0 +1,182 @@
+substitutions:
+  name: spare-bathroom-ducky
+  name_friendly: Spare Bathroom Ducky
+
+api:
+  encryption:
+    key: !secret api_encryption_key
+
+binary_sensor:
+  - platform: ld2410
+    has_moving_target:
+      id: radar_has_moving_target
+      name: Radar Moving Target
+    has_still_target:
+      id: radar_has_still_target
+      name: Radar Still Target
+    has_target:
+      id: radar_has_target
+      name: Radar Target
+  - platform: status
+    entity_category: diagnostic
+    name: Online
+
+button:
+  - platform: ld2410
+    factory_reset:
+      name: Factory Reset Radar
+    query_params:
+      name: Query Params
+    restart:
+      name: Restart Radar
+  - platform: restart
+    entity_category: diagnostic
+    name: ESP Reboot
+
+esp32:
+  variant: esp32c6
+
+esphome:
+  friendly_name: ${name_friendly}
+  name: ${name}
+  on_boot:
+    - priority: 900
+      then:
+        - lambda: |-
+            id(radar_bluetooth).turn_off();
+
+ld2410:
+
+light:
+  - platform: esp32_rmt_led_strip
+    chipset: ws2812
+    name: Night Light
+    num_leds: 8
+    pin: GPIO2
+    restore_mode: RESTORE_DEFAULT_OFF
+    rgb_order: GRB
+
+logger:
+  level: WARN
+
+number:
+  - platform: ld2410
+    max_move_distance_gate:
+      name: Radar Max Move Distance
+    max_still_distance_gate:
+      name: Radar Max Still Distance
+    timeout:
+      name: Radar Timeout
+
+ota:
+  - platform: esphome
+    password: !secret ota_password
+
+sensor:
+  - platform: internal_temperature
+    entity_category: diagnostic
+    name: ESP Temperature
+  - platform: ld2410
+    detection_distance:
+      filters:
+        - throttle_with_priority: 1000ms
+        - lambda: |-
+            if (!id(radar_has_target).state) return NAN;
+            if (id(reduce_db_reporting).state) {
+              static float last = 0;
+              if (abs(x - last) < 5) return {};
+              last = x;
+            }
+            return x;
+      id: radar_detection_distance
+      name: Radar Detection Distance
+    moving_distance:
+      filters:
+        - throttle_with_priority: 1000ms
+        - lambda: |-
+            if (!id(radar_has_moving_target).state) return NAN;
+            if (id(reduce_db_reporting).state) {
+              static float last = 0;
+              if (abs(x - last) < 5) return {};
+              last = x;
+            }
+            return x;
+      id: radar_moving_distance
+      name: Radar Moving Distance
+    moving_energy:
+      filters:
+        - throttle_with_priority: 1000ms
+        - lambda: |-
+            if (id(reduce_db_reporting).state) return {};
+            return x;
+      id: radar_moving_energy
+      name: Radar Move Energy
+    still_distance:
+      filters:
+        - throttle_with_priority: 1000ms
+        - lambda: |-
+            if (!id(radar_has_still_target).state) return NAN;
+            if (id(reduce_db_reporting).state) {
+              static float last = 0;
+              if (abs(x - last) < 5) return {};
+              last = x;
+            }
+            return x;
+      id: radar_still_distance
+      name: Radar Still Distance
+    still_energy:
+      filters:
+        - throttle_with_priority: 1000ms
+        - lambda: |-
+            if (id(reduce_db_reporting).state) return {};
+            return x;
+      id: radar_still_energy
+      name: Radar Still Energy
+
+switch:
+  - platform: ld2410
+    bluetooth:
+      id: radar_bluetooth
+      name: LD2410 Bluetooth
+    engineering_mode:
+      name: Radar Engineering Mode
+  - platform: template
+    entity_category: config
+    icon: mdi:database
+    id: reduce_db_reporting
+    name: Reduce DB Reporting
+    optimistic: true
+    restore_mode: RESTORE_DEFAULT_OFF
+
+text_sensor:
+  - platform: ld2410
+    mac_address:
+      entity_category: diagnostic
+      name: Radar Bluetooth MAC
+    version:
+      entity_category: diagnostic
+      name: Radar Firmware Version
+  - platform: version
+    entity_category: diagnostic
+    hide_timestamp: true
+    name: ESPHome Version
+  - platform: wifi_info
+    ip_address:
+      entity_category: diagnostic
+      name: IP Address
+    mac_address:
+      entity_category: diagnostic
+      name: MAC Address
+
+uart:
+  baud_rate: 256000
+  rx_pin: GPIO23
+  tx_pin: GPIO16
+
+web_server:
+  port: 80
+  version: 3
+
+wifi:
+  password: !secret wifi_password
+  ssid: !secret wifi_ssid

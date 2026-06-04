@@ -1,0 +1,23 @@
+substitutions:
+  name: apollo-msr-2-98974c
+  name_friendly: Living Room Presence Sensor
+
+api:
+  encryption:
+    key: !secret api_encryption_key
+
+esphome:
+  friendly_name: ${name_friendly}
+  name: ${name}
+  name_add_mac_suffix: false
+
+ota:
+  - id: !extend ota_esphome
+    password: !secret ota_password
+
+packages:
+  ApolloAutomation.MSR-2: github://ApolloAutomation/MSR-2/Integrations/ESPHome/MSR-2_BLE.yaml
+
+wifi:
+  password: !secret wifi_password
+  ssid: !secret wifi_ssid
