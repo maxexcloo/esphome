@@ -26,6 +26,8 @@ ota:
 packages:
   deskup_pro: github://SmartHomeGuys/DeskUp-Pro-Controller-RJ12/deskup-pro-controller.yaml
 
+safe_mode:
+
 wifi:
   password: !secret wifi_password
   ssid: !secret wifi_ssid
