@@ -377,6 +377,7 @@ switch:
     bluetooth:
       id: radar_bluetooth
       name: LD2410 Bluetooth
+      restore_mode: RESTORE_DEFAULT_OFF
     engineering_mode:
       name: Radar Engineering Mode
   - platform: template
