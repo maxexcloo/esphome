@@ -72,6 +72,8 @@ ota:
   - platform: esphome
     password: !secret ota_password
 
+safe_mode:
+
 sensor:
   - platform: internal_temperature
     entity_category: diagnostic
