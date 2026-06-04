@@ -220,8 +220,6 @@ number:
     optimistic: true
     restore_value: true
     step: 1
-    unit_of_measurement: cm
-    update_interval: never
 
 ota:
   - platform: esphome
