@@ -68,6 +68,18 @@ sensor:
       name: Heart Rate
     num_targets:
       name: Target Count
+  - platform: uptime
+    disabled_by_default: true
+    entity_category: diagnostic
+    id: sys_uptime
+    name: Uptime
+    update_interval: 60s
+  - platform: wifi_signal
+    disabled_by_default: true
+    entity_category: diagnostic
+    id: wifi_signal_db
+    name: WiFi Signal
+    update_interval: 60s
 
 text_sensor:
   - platform: version
