@@ -42,6 +42,7 @@ fan:
     id: vornado
     mcp4xxx_id: digipot
     name: Fan
+    restore_mode: RESTORE_DEFAULT_OFF
     speed_count: 100
 
 logger:
