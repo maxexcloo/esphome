@@ -20,6 +20,7 @@ button:
     name: ESP Reboot
 
 esp32:
+  board: seeed_xiao_esp32c6
   variant: esp32c6
   framework:
     type: esp-idf
