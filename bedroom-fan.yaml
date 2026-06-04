@@ -28,6 +28,7 @@ button:
     name: ESP Reboot
 
 esp32:
+  board: esp32-c6-devkitc-1
   variant: esp32c6
   framework:
     type: esp-idf
