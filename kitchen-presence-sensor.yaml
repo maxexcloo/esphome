@@ -8,8 +8,12 @@ api:
 
 binary_sensor:
   - platform: seeed_mr60bha2
+    fall_detected:
+      name: Radar Fall Detected
     has_target:
       name: Radar Target
+    presence:
+      name: Radar Presence
   - platform: status
     entity_category: diagnostic
     name: Online
