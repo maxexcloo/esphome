@@ -57,6 +57,7 @@ sensor:
   - platform: bh1750
     name: Illuminance
   - platform: internal_temperature
+    disabled_by_default: true
     entity_category: diagnostic
     name: ESP Temperature
   - platform: seeed_mr60bha2
