@@ -78,7 +78,6 @@ button:
     factory_reset:
       name: Factory Reset Radar
     query_params:
-      id: query_params_button
       name: Query Params
     restart:
       name: Restart Radar
@@ -95,11 +94,6 @@ esp32:
 esphome:
   friendly_name: ${name_friendly}
   name: ${name}
-  on_boot:
-    - priority: -10
-      then:
-        - delay: 5s
-        - button.press: query_params_button
 
 ld2410:
   id: ld2410_radar
