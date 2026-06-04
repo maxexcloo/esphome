@@ -46,6 +46,8 @@ ota:
   - platform: esphome
     password: !secret ota_password
 
+safe_mode:
+
 seeed_mr60bha2:
 
 sensor:
