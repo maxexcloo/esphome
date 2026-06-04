@@ -65,6 +65,7 @@ safe_mode:
 
 sensor:
   - platform: internal_temperature
+    disabled_by_default: true
     entity_category: diagnostic
     name: ESP Temperature
   - platform: rotary_encoder
