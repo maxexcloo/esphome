@@ -94,11 +94,6 @@ esp32:
 esphome:
   friendly_name: ${name_friendly}
   name: ${name}
-  on_boot:
-    - priority: 900
-      then:
-        - lambda: |-
-            id(radar_bluetooth).turn_off();
 
 ld2410:
   id: ld2410_radar
