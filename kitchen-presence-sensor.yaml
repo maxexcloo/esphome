@@ -12,8 +12,6 @@ binary_sensor:
       name: Radar Fall Detected
     has_target:
       name: Radar Target
-    presence:
-      name: Radar Presence
   - platform: status
     entity_category: diagnostic
     name: Online
