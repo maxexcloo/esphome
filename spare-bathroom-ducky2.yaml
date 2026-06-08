@@ -1,6 +1,6 @@
 substitutions:
   name: "spare-bathroom-ducky2"
-  name_friendly: Bathroom Ducky
+  name_friendly: Spare Bathroom Ducky
 
 api:
   encryption:
