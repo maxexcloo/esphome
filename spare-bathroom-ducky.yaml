@@ -1,5 +1,5 @@
 substitutions:
-  name: "spare-bathroom-ducky"
+  name: spare-bathroom-ducky
   name_friendly: Spare Bathroom Ducky
 
 api:
