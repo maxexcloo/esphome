@@ -1,0 +1,110 @@
+substitutions:
+  name: "spare-bathroom-ducky"
+  name_friendly: Spare Bathroom Ducky
+
+api:
+  encryption:
+    key: !secret api_encryption_key
+
+binary_sensor:
+  - platform: status
+    entity_category: diagnostic
+    name: Online
+
+button:
+  - platform: restart
+    entity_category: diagnostic
+    name: ESP Reboot
+
+esp32:
+  board: seeed_xiao_esp32c6
+  variant: esp32c6
+  framework:
+    type: esp-idf
+
+esphome:
+  friendly_name: ${name_friendly}
+  name: ${name}
+
+light:
+  - platform: esp32_rmt_led_strip
+    chipset: ws2812
+    name: Night Light
+    num_leds: 8
+    pin: GPIO2
+    restore_mode: RESTORE_DEFAULT_OFF
+    rgb_order: GRB
+
+logger:
+  level: WARN
+
+ota:
+  - platform: esphome
+    password: !secret ota_password
+
+safe_mode:
+
+sensor:
+  - platform: internal_temperature
+    disabled_by_default: true
+    entity_category: diagnostic
+    filters:
+      - lambda: |-
+          static float last_reported_value = -6.0;
+          float current_value = x;
+
+          if (id(reduce_db_reporting).state) {
+            if (abs(current_value - last_reported_value) >= 5.0) {
+              last_reported_value = current_value;
+              return current_value;
+            } else {
+              return {};
+            }
+          } else {
+            last_reported_value = current_value;
+            return current_value;
+          }
+    id: sys_esp_temperature
+    name: ESP Temperature
+  - platform: uptime
+    disabled_by_default: true
+    entity_category: diagnostic
+    id: sys_uptime
+    name: Uptime
+    update_interval: 60s
+  - platform: wifi_signal
+    disabled_by_default: true
+    entity_category: diagnostic
+    id: wifi_signal_db
+    name: WiFi Signal
+    update_interval: 60s
+
+switch:
+  - platform: template
+    entity_category: config
+    icon: mdi:database
+    id: reduce_db_reporting
+    name: Reduce DB Reporting
+    optimistic: true
+    restore_mode: RESTORE_DEFAULT_OFF
+
+text_sensor:
+  - platform: version
+    entity_category: diagnostic
+    hide_timestamp: true
+    name: ESPHome Version
+  - platform: wifi_info
+    ip_address:
+      entity_category: diagnostic
+      name: IP Address
+    mac_address:
+      entity_category: diagnostic
+      name: MAC Address
+
+web_server:
+  port: 80
+  version: 3
+
+wifi:
+  password: !secret wifi_password
+  ssid: !secret wifi_ssid
