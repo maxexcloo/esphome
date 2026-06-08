@@ -101,11 +101,6 @@ text_sensor:
       entity_category: diagnostic
       name: MAC Address
 
-uart:
-  baud_rate: 256000
-  rx_pin: GPIO23
-  tx_pin: GPIO16
-
 web_server:
   port: 80
   version: 3
