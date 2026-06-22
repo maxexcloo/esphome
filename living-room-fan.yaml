@@ -69,7 +69,7 @@ sensor:
     entity_category: diagnostic
     name: ESP Temperature
   - platform: rotary_encoder
-    id: dial
+    name: Dial
     internal: true
     on_anticlockwise:
       - lambda: |-
