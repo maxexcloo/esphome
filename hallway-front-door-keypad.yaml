@@ -74,6 +74,9 @@ text_sensor:
       entity_category: diagnostic
       name: MAC Address
 
+time:
+  - platform: sntp
+      
 web_server:
   port: 80
   version: 3
