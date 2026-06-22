@@ -70,7 +70,7 @@ sensor:
     name: ESP Temperature
   - platform: rotary_encoder
     internal: true
-    name: Speed
+    name: Control
     on_anticlockwise:
       - lambda: |-
           int fan_speed = id(vornado).speed - 5;
