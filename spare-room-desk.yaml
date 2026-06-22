@@ -34,7 +34,6 @@ sensor:
   - platform: wifi_signal
     disabled_by_default: true
     entity_category: diagnostic
-    id: wifi_signal_db
     name: WiFi Signal
     update_interval: 60s
 
