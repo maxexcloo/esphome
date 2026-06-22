@@ -20,6 +20,10 @@ esphome:
   friendly_name: ${name_friendly}
   name: ${name}
 
+external_components:
+  - source: github://pierluigizagaria/switchbot-keypad-bridge
+    components: [switchbot_keypad_bridge]
+
 light:
   - platform: esp32_rmt_led_strip
     chipset: sk6812
