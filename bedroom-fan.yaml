@@ -8,7 +8,7 @@ api:
 
 binary_sensor:
   - platform: gpio
-    id: push_button
+    name: Button
     internal: true
     on_release:
       - fan.toggle: vornado
@@ -69,7 +69,7 @@ sensor:
     entity_category: diagnostic
     name: ESP Temperature
   - platform: rotary_encoder
-    id: dial
+    name: Dial
     internal: true
     on_anticlockwise:
       - lambda: |-
@@ -100,13 +100,11 @@ sensor:
   - platform: uptime
     disabled_by_default: true
     entity_category: diagnostic
-    id: sys_uptime
     name: Uptime
     update_interval: 60s
   - platform: wifi_signal
     disabled_by_default: true
     entity_category: diagnostic
-    id: wifi_signal_db
     name: WiFi Signal
     update_interval: 60s
 
