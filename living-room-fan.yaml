@@ -8,7 +8,7 @@ api:
 
 binary_sensor:
   - platform: gpio
-    id: push_button
+    name: Toggle
     internal: true
     on_release:
       - fan.toggle: vornado
