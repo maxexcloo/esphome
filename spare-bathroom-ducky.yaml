@@ -63,18 +63,15 @@ sensor:
             last_reported_value = current_value;
             return current_value;
           }
-    id: sys_esp_temperature
     name: ESP Temperature
   - platform: uptime
     disabled_by_default: true
     entity_category: diagnostic
-    id: sys_uptime
     name: Uptime
     update_interval: 60s
   - platform: wifi_signal
     disabled_by_default: true
     entity_category: diagnostic
-    id: wifi_signal_db
     name: WiFi Signal
     update_interval: 60s
 
