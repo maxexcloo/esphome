@@ -69,8 +69,8 @@ sensor:
     entity_category: diagnostic
     name: ESP Temperature
   - platform: rotary_encoder
-    name: Dial
     internal: true
+    name: Dial
     on_anticlockwise:
       - lambda: |-
           int fan_speed = id(vornado).speed - 5;
