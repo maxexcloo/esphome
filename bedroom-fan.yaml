@@ -8,8 +8,8 @@ api:
 
 binary_sensor:
   - platform: gpio
-    name: Button
     internal: true
+    name: Toggle
     on_release:
       - fan.toggle: vornado
     pin:
@@ -69,8 +69,8 @@ sensor:
     entity_category: diagnostic
     name: ESP Temperature
   - platform: rotary_encoder
-    name: Dial
     internal: true
+    name: Control
     on_anticlockwise:
       - lambda: |-
           int fan_speed = id(vornado).speed - 5;
