@@ -71,6 +71,8 @@ switchbot_keypad_bridge:
         data:
           index: !lambda 'return to_string(index);'
           method: !lambda 'return method;'
+  unpair_button:
+    name: Unpair
 
 text_sensor:
   - platform: version
