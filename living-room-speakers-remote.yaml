@@ -9,6 +9,7 @@ substitutions:
 
 packages:
   base: !include packages/base.yaml
+  diagnostic_sensors: !include packages/diagnostic-sensors.yaml
   diagnostics: !include packages/diagnostics.yaml
   speakers_remote: !include packages/speakers-remote.yaml
   web_server: !include packages/web-server.yaml
