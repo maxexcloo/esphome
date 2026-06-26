@@ -26,7 +26,7 @@ ota:
     password: !secret ota_password
 
 packages:
-  deskup_pro: github://SmartHomeGuys/DeskUp-Pro-Controller-RJ12/deskup-pro-controller.yaml
+  deskup_pro: github://smarthomeguys/deskup-pro-controller-rj12/deskup-pro-controller.yaml
 
 safe_mode:
 

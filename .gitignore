@@ -1,2 +1,4 @@
-/.esphome/
-/secrets.yaml
+.*.json
+.device-builder
+.esphome
+secrets.yaml
