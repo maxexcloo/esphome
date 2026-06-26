@@ -4,11 +4,8 @@ substitutions:
 
 packages:
   base: !include packages/base.yaml
-
-button:
-  - platform: restart
-    entity_category: diagnostic
-    name: ESP Reboot
+  diagnostic_sensors: !include packages/diagnostic-sensors.yaml
+  diagnostics: !include packages/diagnostics.yaml
 
 esp32:
   board: m5stack-atom
@@ -28,22 +25,6 @@ light:
     pin: GPIO27
     rgb_order: GRB
 
-sensor:
-  - platform: internal_temperature
-    disabled_by_default: true
-    entity_category: diagnostic
-    name: ESP Temperature
-  - platform: uptime
-    disabled_by_default: true
-    entity_category: diagnostic
-    name: Uptime
-    update_interval: 60s
-  - platform: wifi_signal
-    disabled_by_default: true
-    entity_category: diagnostic
-    name: WiFi Signal
-    update_interval: 60s
-
 switchbot_keypad_bridge:
   battery_level:
     name: Keypad Battery
@@ -53,25 +34,12 @@ switchbot_keypad_bridge:
     name: Action
   on_unlock:
     - homeassistant.event:
-        event: esphome.switchbot_keypad_unlock
         data:
           index: !lambda 'return to_string(index);'
           method: !lambda 'return method;'
+        event: esphome.switchbot_keypad_unlock
   unpair_button:
     name: Unpair
-
-text_sensor:
-  - platform: version
-    entity_category: diagnostic
-    hide_timestamp: true
-    name: ESPHome Version
-  - platform: wifi_info
-    ip_address:
-      entity_category: diagnostic
-      name: IP Address
-    mac_address:
-      entity_category: diagnostic
-      name: MAC Address
 
 time:
   - platform: sntp
