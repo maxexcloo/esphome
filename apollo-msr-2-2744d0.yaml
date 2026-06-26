@@ -3,5 +3,5 @@ substitutions:
   name_friendly: Bedroom Presence Sensor
 
 packages:
-  ApolloAutomation.MSR-2: github://ApolloAutomation/MSR-2/Integrations/ESPHome/MSR-2_BLE.yaml
+  apolloautomation.msr-2: github://apolloautomation/msr-2/integrations/esphome/msr-2_ble.yaml
   base_apollo: !include packages/base-apollo.yaml
