@@ -20,31 +20,3 @@ light:
     num_leds: 8
     pin: GPIO2
     rgb_order: GRB
-
-sensor:
-  - id: !extend sys_esp_temperature
-    filters:
-      - lambda: |-
-          static float last_reported_value = -6.0;
-          float current_value = x;
-
-          if (id(reduce_db_reporting).state) {
-            if (abs(current_value - last_reported_value) >= 5.0) {
-              last_reported_value = current_value;
-              return current_value;
-            } else {
-              return {};
-            }
-          } else {
-            last_reported_value = current_value;
-            return current_value;
-          }
-
-switch:
-  - platform: template
-    entity_category: config
-    icon: mdi:database
-    id: reduce_db_reporting
-    name: Reduce DB Reporting
-    optimistic: true
-    restore_mode: RESTORE_DEFAULT_OFF
