@@ -16,8 +16,8 @@ esp32:
     type: esp-idf
 
 external_components:
-  - source: github://pierluigizagaria/switchbot-keypad-bridge
-    components: [switchbot_keypad_bridge]
+  - components: [switchbot_keypad_bridge]
+    source: github://pierluigizagaria/switchbot-keypad-bridge
 
 light:
   - platform: esp32_rmt_led_strip
