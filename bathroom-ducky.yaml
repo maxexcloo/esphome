@@ -213,9 +213,9 @@ select:
 
 sensor:
   - platform: ld2410
+    detection_distance:
       id: radar_detection_distance
       name: Radar Detection Distance
-    detection_distance:
       filters:
         - throttle_with_priority: 1000ms
         - lambda: |-
@@ -272,6 +272,8 @@ sensor:
       still_energy:
         name: Radar G8 Still Energy
     moving_distance:
+      id: radar_moving_distance
+      name: Radar Moving Distance
       filters:
         - throttle_with_priority: 1000ms
         - lambda: |-
@@ -282,17 +284,17 @@ sensor:
               last = x;
             }
             return x;
-      id: radar_moving_distance
-      name: Radar Moving Distance
     moving_energy:
+      id: radar_moving_energy
+      name: Radar Move Energy
       filters:
         - throttle_with_priority: 1000ms
         - lambda: |-
             if (id(reduce_db_reporting).state) return {};
             return x;
-      id: radar_moving_energy
-      name: Radar Move Energy
     still_distance:
+      id: radar_still_distance
+      name: Radar Still Distance
       filters:
         - throttle_with_priority: 1000ms
         - lambda: |-
@@ -303,16 +305,14 @@ sensor:
               last = x;
             }
             return x;
-      id: radar_still_distance
-      name: Radar Still Distance
     still_energy:
+      id: radar_still_energy
+      name: Radar Still Energy
       filters:
         - throttle_with_priority: 1000ms
         - lambda: |-
             if (id(reduce_db_reporting).state) return {};
             return x;
-      id: radar_still_energy
-      name: Radar Still Energy
 
 switch:
   - platform: ld2410

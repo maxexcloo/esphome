@@ -9,9 +9,9 @@ packages:
 
 esp32:
   board: seeed_xiao_esp32c6
+  variant: esp32c6
   framework:
     type: esp-idf
-  variant: esp32c6
 
 light:
   - platform: esp32_rmt_led_strip

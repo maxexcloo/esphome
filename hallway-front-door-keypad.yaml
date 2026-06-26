@@ -33,10 +33,10 @@ switchbot_keypad_bridge:
     name: Action
   on_unlock:
     - homeassistant.event:
+        event: esphome.switchbot_keypad_unlock
         data:
           index: !lambda 'return to_string(index);'
           method: !lambda 'return method;'
-        event: esphome.switchbot_keypad_unlock
   unpair_button:
     name: Unpair
 

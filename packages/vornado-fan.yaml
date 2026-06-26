@@ -1,0 +1,71 @@
+binary_sensor:
+  - platform: gpio
+    internal: true
+    name: Toggle
+    on_release:
+      - fan.toggle: vornado
+    pin:
+      inverted: true
+      number: GPIO2
+      mode:
+        input: true
+        pullup: true
+
+esp32:
+  board: esp32-c6-devkitc-1
+  variant: esp32c6
+  framework:
+    type: esp-idf
+
+external_components:
+  - components: [mcp4xxx]
+    source: components
+
+fan:
+  - platform: mcp4xxx
+    id: vornado
+    mcp4xxx_id: digipot
+    name: Fan
+    restore_mode: RESTORE_DEFAULT_OFF
+    speed_count: 100
+
+mcp4xxx:
+  - cs_pin: GPIO18
+    id: digipot
+    initial_value: 0
+    internal: true
+
+sensor:
+  - platform: rotary_encoder
+    internal: true
+    name: Control
+    pin_a: GPIO22
+    pin_b: GPIO23
+    on_anticlockwise:
+      - lambda: |-
+          int fan_speed = id(vornado).speed - 5;
+
+          if (fan_speed < 1) {
+            auto call = id(vornado).turn_off();
+            call.perform();
+            return;
+          }
+
+          auto call = id(vornado).turn_on();
+          call.set_speed(fan_speed);
+          call.perform();
+    on_clockwise:
+      - lambda: |-
+          int fan_speed = id(vornado).speed + 5;
+
+          if (fan_speed > 100) {
+            fan_speed = 100;
+          }
+
+          auto call = id(vornado).turn_on();
+          call.set_speed(fan_speed);
+          call.perform();
+
+spi:
+  clk_pin: GPIO19
+  mosi_pin: GPIO20
