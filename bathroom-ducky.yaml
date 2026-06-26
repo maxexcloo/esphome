@@ -4,6 +4,7 @@ substitutions:
 
 packages:
   base: !include packages/base.yaml
+  diagnostics: !include packages/diagnostics.yaml
   web_server: !include packages/web-server.yaml
 
 binary_sensor:
@@ -17,9 +18,6 @@ binary_sensor:
     has_target:
       id: radar_has_target
       name: Radar Target
-  - platform: status
-    entity_category: diagnostic
-    name: Online
   - platform: template
     device_class: occupancy
     icon: mdi:motion-sensor
@@ -81,16 +79,12 @@ button:
       name: Query Params
     restart:
       name: Restart Radar
-  - platform: restart
-    entity_category: diagnostic
-    name: ESP Reboot
 
 esp32:
   board: seeed_xiao_esp32c6
-
   framework:
-    type: esp-idf  variant: esp32c6
     type: esp-idf
+  variant: esp32c6
 
 ld2410:
 
@@ -377,18 +371,6 @@ text_sensor:
     version:
       entity_category: diagnostic
       name: Radar Firmware Version
-  - platform: version
-    entity_category: diagnostic
-    hide_timestamp: true
-    name: ESPHome Version
-  - platform: wifi_info
-    ip_address:
-      entity_category: diagnostic
-      name: IP Address
-    mac_address:
-      entity_category: diagnostic
-      name: MAC Address
-
 uart:
   baud_rate: 256000
   rx_pin: GPIO23
