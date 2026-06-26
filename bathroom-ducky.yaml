@@ -212,9 +212,7 @@ select:
       name: Radar Gate Size
 
 sensor:
-  - platform: internal_temperature
-    disabled_by_default: true
-    entity_category: diagnostic
+  - id: !extend sys_esp_temperature
     filters:
       - lambda: |-
           static float last_reported_value = -6.0;
@@ -231,8 +229,6 @@ sensor:
             last_reported_value = current_value;
             return current_value;
           }
-    id: sys_esp_temperature
-    name: ESP Temperature
   - platform: ld2410
     detection_distance:
       filters:
@@ -334,18 +330,6 @@ sensor:
             return x;
       id: radar_still_energy
       name: Radar Still Energy
-  - platform: uptime
-    disabled_by_default: true
-    entity_category: diagnostic
-    id: sys_uptime
-    name: Uptime
-    update_interval: 60s
-  - platform: wifi_signal
-    disabled_by_default: true
-    entity_category: diagnostic
-    id: wifi_signal_db
-    name: WiFi Signal
-    update_interval: 60s
 
 switch:
   - platform: ld2410
@@ -371,6 +355,7 @@ text_sensor:
     version:
       entity_category: diagnostic
       name: Radar Firmware Version
+
 uart:
   baud_rate: 256000
   rx_pin: GPIO23
