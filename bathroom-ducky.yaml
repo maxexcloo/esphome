@@ -98,12 +98,6 @@ light:
 
 number:
   - platform: ld2410
-    max_move_distance_gate:
-      name: Radar Max Move Distance
-    max_still_distance_gate:
-      name: Radar Max Still Distance
-    timeout:
-      name: Radar Timeout
     g0:
       move_threshold:
         name: Radar G0 Move Threshold
@@ -149,6 +143,12 @@ number:
         name: Radar G8 Move Threshold
       still_threshold:
         name: Radar G8 Still Threshold
+    max_move_distance_gate:
+      name: Radar Max Move Distance
+    max_still_distance_gate:
+      name: Radar Max Still Distance
+    timeout:
+      name: Radar Timeout
   - platform: template
     device_class: distance
     entity_category: config
