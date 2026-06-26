@@ -4,6 +4,9 @@ substitutions:
   rx_pin: GPIO26
   tx_pin: GPIO32
 
+packages:
+  deskup_pro: github://smarthomeguys/deskup-pro-controller-rj12/deskup-pro-controller.yaml
+
 api:
   encryption:
     key: !secret api_encryption_key
@@ -24,9 +27,6 @@ logger:
 ota:
   - id: !extend ota_esphome
     password: !secret ota_password
-
-packages:
-  deskup_pro: github://smarthomeguys/deskup-pro-controller-rj12/deskup-pro-controller.yaml
 
 safe_mode:
 
