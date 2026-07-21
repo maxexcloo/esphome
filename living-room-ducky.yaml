@@ -17,6 +17,6 @@ light:
   - platform: esp32_rmt_led_strip
     chipset: ws2812
     name: Lamp
-    num_leds: 8
+    num_leds: 16
     pin: GPIO2
     rgb_order: GRB
