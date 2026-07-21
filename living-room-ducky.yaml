@@ -1,25 +1,22 @@
-esphome:
+substitutions:
   name: living-room-ducky
-  friendly_name: Living Room Ducky
+  name_friendly: Living Room Ducky
 
-# Replace this with your actual platform if you aren't using ESP32.
+packages:
+  base: !include packages/base.yaml
+  diagnostics: !include packages/diagnostics.yaml
+  web_server: !include packages/web-server.yaml
+
 esp32:
-  board: esp32dev
+  board: seeed_xiao_esp32c6
+  variant: esp32c6
+  framework:
+    type: esp-idf
 
-logger:
-
-api:
-  encryption:
-    key: "BNvf/Q/MWC4N1TqaqyekJuYL0g9zVfA5L9+TPw4dMeo="
-
-ota:
-  - platform: esphome
-
-wifi:
-  ssid: !secret wifi_ssid
-  password: !secret wifi_password
-  ap:
-    ssid: Living Room Duc Fallback Hotspot
-    password: "jW753BDpAou3"
-
-captive_portal:
+light:
+  - platform: esp32_rmt_led_strip
+    chipset: ws2812
+    name: Lamp
+    num_leds: 8
+    pin: GPIO2
+    rgb_order: GRB
