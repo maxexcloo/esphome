@@ -1,0 +1,25 @@
+esphome:
+  name: bedroom-ducky
+  friendly_name: Bedroom Ducky
+
+# Replace this with your actual platform if you aren't using ESP32.
+esp32:
+  board: esp32dev
+
+logger:
+
+api:
+  encryption:
+    key: "PBRLkUVSH/pl50pin2OXioxYb6crqlCr+MGOZK3UyO8="
+
+ota:
+  - platform: esphome
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  ap:
+    ssid: Bedroom Ducky Fallback Hotspot
+    password: "rEe6RnPowqyW"
+
+captive_portal:
