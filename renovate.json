@@ -1,0 +1,22 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Update pinned ESPHome GitHub dependencies",
+      "managerFilePatterns": [
+        "/(^|/)\\S+\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "github://(?<depName>[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)(?:/[^\\s@]+)?@(?<currentDigest>[a-f0-9]{40})"
+      ],
+      "currentValueTemplate": "main",
+      "datasourceTemplate": "git-refs",
+      "packageNameTemplate": "https://github.com/{{{depName}}}",
+      "versioningTemplate": "git"
+    }
+  ]
+}

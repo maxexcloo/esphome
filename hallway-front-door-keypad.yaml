@@ -13,7 +13,7 @@ esp32:
 
 external_components:
   - components: [switchbot_keypad_bridge]
-    source: github://pierluigizagaria/switchbot-keypad-bridge
+    source: github://pierluigizagaria/switchbot-keypad-bridge@ee233e30f7229eedcc4e9aa2c6bc532498c4b4d5
 
 light:
   - platform: esp32_rmt_led_strip
@@ -25,20 +25,20 @@ light:
     rgb_order: GRB
 
 switchbot_keypad_bridge:
-  battery_level:
-    name: Keypad Battery
   keypad:
     name: Keypad
   keypad_action:
     name: Action
+  keypad_battery_level:
+    name: Keypad Battery
   on_unlock:
     - homeassistant.event:
         event: esphome.switchbot_keypad_unlock
         data:
           index: !lambda 'return to_string(index);'
           method: !lambda 'return method;'
-  unpair_button:
-    name: Unpair
+  reset_button:
+    name: Reset
 
 time:
   - platform: sntp

@@ -5,11 +5,15 @@ substitutions:
   tx_pin: GPIO32
 
 packages:
-  deskup_pro: github://smarthomeguys/deskup-pro-controller-rj12/deskup-pro-controller.yaml
+  deskup_pro: github://smarthomeguys/deskup-pro-controller-rj12/deskup-pro-controller.yaml@efe4780eb1796300464232e5ccff8424f142a8df
 
 api:
   encryption:
     key: !secret api_encryption_key
+
+button:
+  - id: !extend button_reboot
+    name: ESP Reboot
 
 esp32:
   board: m5stack-atom
@@ -20,6 +24,8 @@ esphome:
   friendly_name: ${name_friendly}
   name: ${name}
   name_add_mac_suffix: false
+  project:
+    name: Espressif.m5stack-atom
 
 logger:
   level: WARN
@@ -31,6 +37,8 @@ ota:
 safe_mode:
 
 sensor:
+  - id: !extend sensor_deviceuptime
+    name: Uptime
   - platform: wifi_signal
     disabled_by_default: true
     entity_category: diagnostic
