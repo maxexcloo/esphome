@@ -7,6 +7,103 @@ packages:
   diagnostics: !include packages/diagnostics.yaml
   web_server: !include packages/web-server.yaml
 
+button:
+  - platform: template
+    entity_category: config
+    name: Calibrate All Scales
+    on_press:
+      - lambda: |-
+          const float reference_weight = id(scale_calibration_weight).state;
+          mini_scale::calibrate(id(scale_1), "Scale 1", reference_weight);
+          mini_scale::calibrate(id(scale_2), "Scale 2", reference_weight);
+          mini_scale::calibrate(id(scale_3), "Scale 3", reference_weight);
+          mini_scale::calibrate(id(scale_4), "Scale 4", reference_weight);
+          mini_scale::calibrate(id(scale_5), "Scale 5", reference_weight);
+          mini_scale::calibrate(id(scale_6), "Scale 6", reference_weight);
+  - platform: template
+    entity_category: config
+    name: Calibrate Scale 1
+    on_press:
+      - lambda: |-
+          mini_scale::calibrate(
+              id(scale_1), "Scale 1", id(scale_calibration_weight).state);
+  - platform: template
+    entity_category: config
+    name: Calibrate Scale 2
+    on_press:
+      - lambda: |-
+          mini_scale::calibrate(
+              id(scale_2), "Scale 2", id(scale_calibration_weight).state);
+  - platform: template
+    entity_category: config
+    name: Calibrate Scale 3
+    on_press:
+      - lambda: |-
+          mini_scale::calibrate(
+              id(scale_3), "Scale 3", id(scale_calibration_weight).state);
+  - platform: template
+    entity_category: config
+    name: Calibrate Scale 4
+    on_press:
+      - lambda: |-
+          mini_scale::calibrate(
+              id(scale_4), "Scale 4", id(scale_calibration_weight).state);
+  - platform: template
+    entity_category: config
+    name: Calibrate Scale 5
+    on_press:
+      - lambda: |-
+          mini_scale::calibrate(
+              id(scale_5), "Scale 5", id(scale_calibration_weight).state);
+  - platform: template
+    entity_category: config
+    name: Calibrate Scale 6
+    on_press:
+      - lambda: |-
+          mini_scale::calibrate(
+              id(scale_6), "Scale 6", id(scale_calibration_weight).state);
+  - platform: template
+    entity_category: config
+    name: Tare All Scales
+    on_press:
+      - lambda: |-
+          mini_scale::tare(id(scale_1), "Scale 1");
+          mini_scale::tare(id(scale_2), "Scale 2");
+          mini_scale::tare(id(scale_3), "Scale 3");
+          mini_scale::tare(id(scale_4), "Scale 4");
+          mini_scale::tare(id(scale_5), "Scale 5");
+          mini_scale::tare(id(scale_6), "Scale 6");
+  - platform: template
+    entity_category: config
+    name: Tare Scale 1
+    on_press:
+      - lambda: mini_scale::tare(id(scale_1), "Scale 1");
+  - platform: template
+    entity_category: config
+    name: Tare Scale 2
+    on_press:
+      - lambda: mini_scale::tare(id(scale_2), "Scale 2");
+  - platform: template
+    entity_category: config
+    name: Tare Scale 3
+    on_press:
+      - lambda: mini_scale::tare(id(scale_3), "Scale 3");
+  - platform: template
+    entity_category: config
+    name: Tare Scale 4
+    on_press:
+      - lambda: mini_scale::tare(id(scale_4), "Scale 4");
+  - platform: template
+    entity_category: config
+    name: Tare Scale 5
+    on_press:
+      - lambda: mini_scale::tare(id(scale_5), "Scale 5");
+  - platform: template
+    entity_category: config
+    name: Tare Scale 6
+    on_press:
+      - lambda: mini_scale::tare(id(scale_6), "Scale 6");
+
 esp32:
   board: m5stack-timer-cam
 
@@ -29,6 +126,10 @@ esp32_camera:
     - GPIO19
   external_clock:
     pin: GPIO27
+
+esphome:
+  includes:
+    - components/mini_scale.h
 
 i2c:
   # Dedicated SCCB bus for the OV3660 camera.
@@ -62,6 +163,19 @@ i2c_device:
   - address: 0x26
     id: scale_6
     i2c_id: scale_bus_6
+
+number:
+  - platform: template
+    entity_category: config
+    id: scale_calibration_weight
+    initial_value: 1000
+    max_value: 5000
+    min_value: 1
+    name: Scale Calibration Weight
+    optimistic: true
+    restore_value: true
+    step: 1
+    unit_of_measurement: g
 
 psram:
   speed: 80MHz
