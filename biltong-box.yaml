@@ -1,0 +1,193 @@
+substitutions:
+  name: biltong-box
+  name_friendly: Biltong Box
+
+packages:
+  base: !include packages/base.yaml
+  diagnostics: !include packages/diagnostics.yaml
+  web_server: !include packages/web-server.yaml
+
+esp32:
+  board: m5stack-timer-cam
+
+esp32_camera:
+  href_pin: GPIO26
+  i2c_id: camera_i2c
+  name: Camera
+  pixel_clock_pin: GPIO21
+  reset_pin: GPIO15
+  vsync_pin: GPIO22
+  # OV3660 D0 through D7; this hardware-defined list order is significant.
+  data_pins:
+    - GPIO32
+    - GPIO35
+    - GPIO34
+    - GPIO5
+    - GPIO39
+    - GPIO18
+    - GPIO36
+    - GPIO19
+  external_clock:
+    pin: GPIO27
+
+i2c:
+  # Dedicated SCCB bus for the OV3660 camera.
+  - frequency: 100kHz
+    id: camera_i2c
+    scan: false
+    scl: GPIO23
+    sda: GPIO25
+  # TimerCamera-F HY2.0-4P (Grove) port.
+  - frequency: 100kHz
+    id: grove_i2c
+    scl: GPIO13
+    sda: GPIO4
+
+i2c_device:
+  - address: 0x26
+    id: scale_1
+    i2c_id: scale_bus_1
+  - address: 0x26
+    id: scale_2
+    i2c_id: scale_bus_2
+  - address: 0x26
+    id: scale_3
+    i2c_id: scale_bus_3
+  - address: 0x26
+    id: scale_4
+    i2c_id: scale_bus_4
+  - address: 0x26
+    id: scale_5
+    i2c_id: scale_bus_5
+  - address: 0x26
+    id: scale_6
+    i2c_id: scale_bus_6
+
+psram:
+  speed: 80MHz
+
+sensor:
+  - platform: qmp6988
+    i2c_id: grove_i2c
+    iir_filter: 2x
+    pressure:
+      name: Air Pressure
+      oversampling: 16x
+  - platform: sht3xd
+    i2c_id: grove_i2c
+    humidity:
+      name: Humidity
+    temperature:
+      name: Temperature
+  # Unit Mini Scales returns its calibrated weight in grams as a
+  # little-endian IEEE-754 float from register 0x10.
+  - platform: template
+    device_class: weight
+    name: Scale 1 Weight
+    state_class: measurement
+    unit_of_measurement: g
+    update_interval: 5s
+    lambda: |-
+      uint8_t data[4];
+      if (id(scale_1).read_register(0x10, data, sizeof(data)) !=
+          esphome::i2c::ERROR_OK) {
+        return NAN;
+      }
+      float weight;
+      memcpy(&weight, data, sizeof(weight));
+      return weight;
+  - platform: template
+    device_class: weight
+    name: Scale 2 Weight
+    state_class: measurement
+    unit_of_measurement: g
+    update_interval: 5s
+    lambda: |-
+      uint8_t data[4];
+      if (id(scale_2).read_register(0x10, data, sizeof(data)) !=
+          esphome::i2c::ERROR_OK) {
+        return NAN;
+      }
+      float weight;
+      memcpy(&weight, data, sizeof(weight));
+      return weight;
+  - platform: template
+    device_class: weight
+    name: Scale 3 Weight
+    state_class: measurement
+    unit_of_measurement: g
+    update_interval: 5s
+    lambda: |-
+      uint8_t data[4];
+      if (id(scale_3).read_register(0x10, data, sizeof(data)) !=
+          esphome::i2c::ERROR_OK) {
+        return NAN;
+      }
+      float weight;
+      memcpy(&weight, data, sizeof(weight));
+      return weight;
+  - platform: template
+    device_class: weight
+    name: Scale 4 Weight
+    state_class: measurement
+    unit_of_measurement: g
+    update_interval: 5s
+    lambda: |-
+      uint8_t data[4];
+      if (id(scale_4).read_register(0x10, data, sizeof(data)) !=
+          esphome::i2c::ERROR_OK) {
+        return NAN;
+      }
+      float weight;
+      memcpy(&weight, data, sizeof(weight));
+      return weight;
+  - platform: template
+    device_class: weight
+    name: Scale 5 Weight
+    state_class: measurement
+    unit_of_measurement: g
+    update_interval: 5s
+    lambda: |-
+      uint8_t data[4];
+      if (id(scale_5).read_register(0x10, data, sizeof(data)) !=
+          esphome::i2c::ERROR_OK) {
+        return NAN;
+      }
+      float weight;
+      memcpy(&weight, data, sizeof(weight));
+      return weight;
+  - platform: template
+    device_class: weight
+    name: Scale 6 Weight
+    state_class: measurement
+    unit_of_measurement: g
+    update_interval: 5s
+    lambda: |-
+      uint8_t data[4];
+      if (id(scale_6).read_register(0x10, data, sizeof(data)) !=
+          esphome::i2c::ERROR_OK) {
+        return NAN;
+      }
+      float weight;
+      memcpy(&weight, data, sizeof(weight));
+      return weight;
+
+# ENV III's QMP6988 already uses 0x70 on the Grove bus. Set the PaHub v2.1
+# DIP switches to address 0x71 before connecting it through the Grove Y cable.
+tca9548a:
+  - address: 0x71
+    id: scales_hub
+    i2c_id: grove_i2c
+    channels:
+      - bus_id: scale_bus_1
+        channel: 0
+      - bus_id: scale_bus_2
+        channel: 1
+      - bus_id: scale_bus_3
+        channel: 2
+      - bus_id: scale_bus_4
+        channel: 3
+      - bus_id: scale_bus_5
+        channel: 4
+      - bus_id: scale_bus_6
+        channel: 5

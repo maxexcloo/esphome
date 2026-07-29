@@ -60,8 +60,6 @@ button:
 
 esp32:
   board: m5stack-atom
-  framework:
-    type: esp-idf
 
 light:
   - platform: esp32_rmt_led_strip
