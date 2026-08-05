@@ -1,5 +1,5 @@
 .*.json
-.device-builder
+.device-builder*
 .esphome
+__pycache__/
 secrets.yaml
-__pycache__
