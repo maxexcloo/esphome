@@ -36,6 +36,9 @@ esp32:
   board: m5stack-atom
 
 globals:
+  - id: has_received_frame
+    initial_value: 'false'
+    type: bool
   - id: last_rx_ms
     initial_value: '0'
     type: uint32_t
@@ -45,7 +48,7 @@ interval:
     then:
       - lambda: |-
           const uint32_t silent_ms = millis() - id(last_rx_ms);
-          const bool call = silent_ms > 3000 && silent_ms < 600000;
+          const bool call = id(has_received_frame) && silent_ms > 3000 && silent_ms < 600000;
           if (id(call_active).state != call) {
             id(call_active).publish_state(call);
           }
@@ -78,5 +81,6 @@ uart:
     dummy_receiver: true
     sequence:
       - lambda: |-
+          id(has_received_frame) = true;
           id(last_rx_ms) = millis();
           UARTDebug::log_hex(direction, bytes, ':', debug_prefix);

@@ -1,9 +1,9 @@
 import esphome.codegen as cg
-from esphome.components import fan
 import esphome.config_validation as cv
-from esphome.const import CONF_ID, CONF_SPEED_COUNT
+from esphome.components import fan
+from esphome.const import CONF_SPEED_COUNT
 
-from .. import mcp4xxx_ns, MCP4XXX
+from .. import MCP4XXX, mcp4xxx_ns
 
 CONF_MCP4XXX_ID = "mcp4xxx_id"
 

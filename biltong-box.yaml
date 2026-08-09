@@ -107,6 +107,7 @@ button:
 esp32:
   board: m5stack-timer-cam
 
+# GPIO5 and GPIO15 are strapping pins fixed by the TimerCamera-F camera wiring.
 esp32_camera:
   href_pin: GPIO26
   i2c_id: camera_i2c

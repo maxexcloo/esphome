@@ -1,7 +1,6 @@
 import esphome.codegen as cg
-from esphome.components import spi, number
 import esphome.config_validation as cv
-from esphome.const import CONF_ID, CONF_MIN_VALUE, CONF_MAX_VALUE, CONF_STEP
+from esphome.components import number, spi
 
 CODEOWNERS = ["@ellsclytn"]
 DEPENDENCIES = ["spi"]
@@ -24,13 +23,9 @@ CONFIG_SCHEMA = (
     .extend(spi.spi_device_schema(cs_pin_required=True))
 )
 
+
 async def to_code(config):
-    var = await number.new_number(
-        config,
-        min_value=0,
-        max_value=128,
-        step=1
-    )
+    var = await number.new_number(config, min_value=0, max_value=128, step=1)
     await cg.register_component(var, config)
     await spi.register_spi_device(var, config)
 
