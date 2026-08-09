@@ -20,3 +20,7 @@ Device configurations for the homelab ESPHome devices.
 ## Conventions
 
 See `AGENTS.md`.
+
+## Licence
+
+AGPL-3.0 - see [LICENSE](LICENSE).

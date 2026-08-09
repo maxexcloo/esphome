@@ -19,7 +19,7 @@
 
 ## Meaningful order
 
-- Preserve list order when it affects hardware or behavior.
+- Preserve list order when it affects hardware or behaviour.
 - Examples include camera data pins (`D0` through `D7`), automation actions,
   calibration points, and priority-based rules.
 - Add a short comment when a required order may look unsorted.
@@ -35,6 +35,11 @@
 - Use shared `base`, `diagnostics`, and `web_server` packages when applicable.
 - Document non-obvious hardware requirements, such as pin conflicts, bus
   addresses, or DIP-switch settings, next to the relevant component.
+- Preserve `LICENSE` and its legal text; never relicense without explicit approval.
+- Use Australian English throughout authored prose and every project-owned name,
+  including identifiers, configuration keys, environment variables, paths, CLI
+  commands, and options. Update every producer and consumer together; preserve only
+  externally defined names and terminology.
 
 ## Validation
 

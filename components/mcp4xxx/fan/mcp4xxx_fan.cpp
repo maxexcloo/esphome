@@ -16,7 +16,7 @@ void MCP4XXXFan::setup() {
   // Set initial wiper value to minimum and disable terminals (fan off) using parent component
   if (this->parent_ != nullptr) {
     if (!this->parent_->write_wiper_value(0)) {
-      ESP_LOGE(TAG, "Failed to initialize wiper position");
+      ESP_LOGE(TAG, "Failed to initialise wiper position");
       this->mark_failed();
       return;
     }
