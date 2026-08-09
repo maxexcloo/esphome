@@ -12,3 +12,6 @@ packages:
   diagnostics: !include packages/diagnostics.yaml
   speakers_remote: !include packages/speakers-remote.yaml
   web_server: !include packages/web-server.yaml
+
+esp32:
+  board: m5stack-atom

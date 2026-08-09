@@ -58,9 +58,6 @@ button:
       - script.execute: flash_red
       - script.execute: volume_up
 
-esp32:
-  board: m5stack-atom
-
 light:
   - platform: esp32_rmt_led_strip
     chipset: sk6812
