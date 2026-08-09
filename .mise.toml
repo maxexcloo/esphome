@@ -1,0 +1,24 @@
+[tools]
+"pipx:esphome" = { version = "2026.7.3", python = "3.13.14" }
+ruff = "0.16.2"
+uv = "0.12.3"
+
+[tasks.check]
+description = "Lint components and validate device configurations"
+run = """
+ruff check components
+ruff format --check components
+for config_file in *.yaml; do
+  if [ "$config_file" = "secrets.yaml" ]; then
+    continue
+  fi
+  esphome config "$config_file"
+done
+"""
+
+[tasks.fmt]
+description = "Format Python components"
+run = """
+ruff check --fix --select I components
+ruff format components
+"""

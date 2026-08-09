@@ -21,6 +21,17 @@ Device configurations for the homelab ESPHome devices.
 
 See `AGENTS.md`.
 
+## Development
+
+Install the pinned tools and run all checks with Mise:
+
+```shell
+mise install
+mise run check
+```
+
+Format Python components with `mise run fmt`.
+
 ## Licence
 
 AGPL-3.0 - see [LICENSE](LICENSE).
