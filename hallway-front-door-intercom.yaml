@@ -1,0 +1,82 @@
+substitutions:
+  name: hallway-front-door-intercom
+  name_friendly: Hallway Front Door Intercom
+
+packages:
+  base: !include packages/base.yaml
+  diagnostics: !include packages/diagnostics.yaml
+  web_server: !include packages/web-server.yaml
+
+binary_sensor:
+  - platform: template
+    icon: mdi:bell-ring
+    id: call_active
+    name: Call Active
+  - platform: template
+    device_class: sound
+    icon: mdi:volume-high
+    id: intercom_audio
+    name: Intercom Audio
+    filters:
+      - delayed_off: 3s
+    lambda: |-
+      return id(speaker_pulse_rate).state > 300.0;
+
+button:
+  - platform: template
+    icon: mdi:door-open
+    id: unlock_door
+    name: Unlock Door
+    on_press:
+      - switch.turn_on: unlock_relay
+      - delay: 300ms
+      - switch.turn_off: unlock_relay
+
+esp32:
+  board: m5stack-atom
+
+globals:
+  - id: last_rx_ms
+    initial_value: '0'
+    type: uint32_t
+
+interval:
+  - interval: 1s
+    then:
+      - lambda: |-
+          const uint32_t silent_ms = millis() - id(last_rx_ms);
+          const bool call = silent_ms > 3000 && silent_ms < 600000;
+          if (id(call_active).state != call) {
+            id(call_active).publish_state(call);
+          }
+
+logger:
+  level: DEBUG
+
+sensor:
+  - platform: pulse_counter
+    id: speaker_pulse_rate
+    name: Speaker Activity
+    update_interval: 1s
+    pin:
+      mode: INPUT_PULLUP
+      number: GPIO21
+
+switch:
+  - platform: gpio
+    id: unlock_relay
+    internal: true
+    pin: GPIO19
+
+uart:
+  baud_rate: 9600
+  id: rs485_bus
+  rx_pin: GPIO32
+  tx_pin: GPIO26
+  debug:
+    direction: RX
+    dummy_receiver: true
+    sequence:
+      - lambda: |-
+          id(last_rx_ms) = millis();
+          UARTDebug::log_hex(direction, bytes, ':', debug_prefix);
