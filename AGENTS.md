@@ -27,6 +27,8 @@
 ## Configuration
 
 - Omit values that merely restate ESPHome defaults.
+- Sort unordered peer headings, lists, and table rows alphabetically. Preserve
+  narrative, procedural, dependency, interface, priority, and chronological order.
 - Follow the naming pattern:
   - filename and `name`: lowercase kebab-case
   - `name_friendly`: title case

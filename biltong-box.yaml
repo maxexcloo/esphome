@@ -146,23 +146,23 @@ i2c:
 
 i2c_device:
   - address: 0x26
-    id: scale_1
     i2c_id: scale_bus_1
+    id: scale_1
   - address: 0x26
-    id: scale_2
     i2c_id: scale_bus_2
+    id: scale_2
   - address: 0x26
-    id: scale_3
     i2c_id: scale_bus_3
+    id: scale_3
   - address: 0x26
-    id: scale_4
     i2c_id: scale_bus_4
+    id: scale_4
   - address: 0x26
-    id: scale_5
     i2c_id: scale_bus_5
+    id: scale_5
   - address: 0x26
-    id: scale_6
     i2c_id: scale_bus_6
+    id: scale_6
 
 number:
   - platform: template
@@ -290,8 +290,8 @@ sensor:
 # DIP switches to address 0x71 before connecting it through the Grove Y cable.
 tca9548a:
   - address: 0x71
-    id: scales_hub
     i2c_id: grove_i2c
+    id: scales_hub
     channels:
       - bus_id: scale_bus_1
         channel: 0

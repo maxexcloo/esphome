@@ -3,16 +3,28 @@
   "extends": ["config:recommended"],
   "customManagers": [
     {
+      "currentValueTemplate": "main",
       "customType": "regex",
-      "description": "Update pinned ESPHome GitHub dependencies",
+      "datasourceTemplate": "git-refs",
+      "description": "Track pinned ESPHome GitHub dependencies",
       "managerFilePatterns": ["/(^|/)\\S+\\.ya?ml$/"],
       "matchStrings": [
         "github://(?<depName>[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)(?:/[^\\s@]+)?@(?<currentDigest>[a-f0-9]{40})"
       ],
-      "currentValueTemplate": "main",
-      "datasourceTemplate": "git-refs",
       "packageNameTemplate": "https://github.com/{{{depName}}}",
       "versioningTemplate": "git"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "Group minor updates",
+      "groupName": "Minor updates",
+      "matchUpdateTypes": ["minor"]
+    },
+    {
+      "description": "Group patch and pin updates",
+      "groupName": "Patch and pin updates",
+      "matchUpdateTypes": ["patch", "pin"]
     }
   ]
 }
