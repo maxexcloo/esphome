@@ -26,6 +26,8 @@
 
 ## Configuration
 
+- Keep only `AGENTS.md` and `README.md` as root Markdown files; put other project
+  documentation in `docs/`.
 - Omit values that merely restate ESPHome defaults.
 - Sort unordered peer headings, lists, and table rows alphabetically. Preserve
   narrative, procedural, dependency, interface, priority, and chronological order.
@@ -33,7 +35,8 @@
   - filename and `name`: lowercase kebab-case
   - `name_friendly`: title case
 - Use shared `base`, `diagnostics`, and `web_server` packages when applicable.
-- Use `.yaml` for GitHub Actions workflows.
+- Use `.yaml`, never `.yml`, for project-owned YAML files unless external tooling
+  requires a fixed filename.
 - Document non-obvious hardware requirements, such as pin conflicts, bus
   addresses, or DIP-switch settings, next to the relevant component.
 - Preserve `LICENSE` and its legal text; never relicense without explicit approval.
