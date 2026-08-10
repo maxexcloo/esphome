@@ -33,6 +33,7 @@
   - filename and `name`: lowercase kebab-case
   - `name_friendly`: title case
 - Use shared `base`, `diagnostics`, and `web_server` packages when applicable.
+- Use `.yaml` for GitHub Actions workflows.
 - Document non-obvious hardware requirements, such as pin conflicts, bus
   addresses, or DIP-switch settings, next to the relevant component.
 - Preserve `LICENSE` and its legal text; never relicense without explicit approval.
