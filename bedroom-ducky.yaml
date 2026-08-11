@@ -1,20 +1,10 @@
 substitutions:
+  light_name: Lamp
+  light_num_leds: 16
   name: bedroom-ducky
   name_friendly: Bedroom Ducky
 
 packages:
   base: !include packages/base.yaml
-  diagnostics: !include packages/diagnostics.yaml
+  ducky: !include packages/ducky.yaml
   web_server: !include packages/web-server.yaml
-
-esp32:
-  board: seeed_xiao_esp32c6
-  variant: esp32c6
-
-light:
-  - platform: esp32_rmt_led_strip
-    chipset: ws2812
-    name: Lamp
-    num_leds: 16
-    pin: GPIO2
-    rgb_order: GRB

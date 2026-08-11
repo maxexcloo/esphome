@@ -1,10 +1,12 @@
 substitutions:
+  light_name: Night Light
+  light_num_leds: 8
   name: bathroom-ducky
   name_friendly: Bathroom Ducky
 
 packages:
   base: !include packages/base.yaml
-  diagnostics: !include packages/diagnostics.yaml
+  ducky: !include packages/ducky.yaml
   web_server: !include packages/web-server.yaml
 
 binary_sensor:
@@ -27,11 +29,7 @@ binary_sensor:
       bool still_in_zone = id(radar_has_still_target).state && (id(radar_still_distance).state >= id(radar_z1_start).state) && (id(radar_still_distance).state <= id(radar_z1_end).state);
       bool moving_in_zone = id(radar_has_moving_target).state && (id(radar_moving_distance).state >= id(radar_z1_start).state) && (id(radar_moving_distance).state <= id(radar_z1_end).state);
 
-      if (still_in_zone || moving_in_zone) {
-        return true;
-      } else {
-        return false;
-      }
+      return still_in_zone || moving_in_zone;
   - platform: template
     device_class: occupancy
     icon: mdi:motion-sensor
@@ -41,11 +39,7 @@ binary_sensor:
       bool still_in_zone = id(radar_has_still_target).state && (id(radar_still_distance).state > id(radar_z1_end).state) && (id(radar_still_distance).state <= id(radar_z2_end).state);
       bool moving_in_zone = id(radar_has_moving_target).state && (id(radar_moving_distance).state > id(radar_z1_end).state) && (id(radar_moving_distance).state <= id(radar_z2_end).state);
 
-      if (still_in_zone || moving_in_zone) {
-        return true;
-      } else {
-        return false;
-      }
+      return still_in_zone || moving_in_zone;
   - platform: template
     device_class: occupancy
     icon: mdi:motion-sensor
@@ -55,11 +49,7 @@ binary_sensor:
       bool still_in_zone = id(radar_has_still_target).state && (id(radar_still_distance).state > id(radar_z2_end).state) && (id(radar_still_distance).state <= id(radar_z3_end).state);
       bool moving_in_zone = id(radar_has_moving_target).state && (id(radar_moving_distance).state > id(radar_z2_end).state) && (id(radar_moving_distance).state <= id(radar_z3_end).state);
 
-      if (still_in_zone || moving_in_zone) {
-        return true;
-      } else {
-        return false;
-      }
+      return still_in_zone || moving_in_zone;
   - platform: template
     device_class: occupancy
     icon: mdi:motion-sensor
@@ -80,19 +70,7 @@ button:
     restart:
       name: Restart Radar
 
-esp32:
-  board: seeed_xiao_esp32c6
-  variant: esp32c6
-
 ld2410:
-
-light:
-  - platform: esp32_rmt_led_strip
-    chipset: ws2812
-    name: Night Light
-    num_leds: 8
-    pin: GPIO2
-    rgb_order: GRB
 
 number:
   - platform: ld2410
@@ -170,7 +148,7 @@ number:
     max_value: 800
     min_value: 0
     mode: box
-    name: Radar End Zone 1
+    name: Radar Zone 1 End
     optimistic: true
     restore_value: true
     step: 1
@@ -184,7 +162,7 @@ number:
     max_value: 800
     min_value: 0
     mode: box
-    name: Radar End Zone 2
+    name: Radar Zone 2 End
     optimistic: true
     restore_value: true
     step: 1
@@ -198,7 +176,7 @@ number:
     max_value: 800
     min_value: 0
     mode: box
-    name: Radar End Zone 3
+    name: Radar Zone 3 End
     optimistic: true
     restore_value: true
     step: 1
@@ -217,13 +195,21 @@ sensor:
       filters:
         - throttle_with_priority: 1000ms
         - lambda: |-
-            if (!id(radar_has_target).state) return NAN;
-            if (id(reduce_db_reporting).state) {
-              static float last = 0;
-              if (abs(x - last) < 5) return {};
-              last = x;
+            static float last = NAN;
+            static uint32_t last_report_ms = 0;
+            if (!id(radar_has_target).state) {
+              if (isnan(last)) return {};
+              last = NAN;
+              last_report_ms = millis();
+              return NAN;
             }
-            return x;
+            if (!id(reduce_db_reporting).state || isnan(last) ||
+                abs(x - last) >= 5 || millis() - last_report_ms >= 60000) {
+              last = x;
+              last_report_ms = millis();
+              return x;
+            }
+            return {};
     g0:
       move_energy:
         name: Radar G0 Move Energy
@@ -275,42 +261,72 @@ sensor:
       filters:
         - throttle_with_priority: 1000ms
         - lambda: |-
-            if (!id(radar_has_moving_target).state) return NAN;
-            if (id(reduce_db_reporting).state) {
-              static float last = 0;
-              if (abs(x - last) < 5) return {};
-              last = x;
+            static float last = NAN;
+            static uint32_t last_report_ms = 0;
+            if (!id(radar_has_moving_target).state) {
+              if (isnan(last)) return {};
+              last = NAN;
+              last_report_ms = millis();
+              return NAN;
             }
-            return x;
+            if (!id(reduce_db_reporting).state || isnan(last) ||
+                abs(x - last) >= 5 || millis() - last_report_ms >= 60000) {
+              last = x;
+              last_report_ms = millis();
+              return x;
+            }
+            return {};
     moving_energy:
       id: radar_moving_energy
       name: Radar Move Energy
       filters:
         - throttle_with_priority: 1000ms
         - lambda: |-
-            if (id(reduce_db_reporting).state) return {};
-            return x;
+            static float last = NAN;
+            static uint32_t last_report_ms = 0;
+            if (!id(reduce_db_reporting).state || isnan(last) ||
+                abs(x - last) >= 5 || millis() - last_report_ms >= 60000) {
+              last = x;
+              last_report_ms = millis();
+              return x;
+            }
+            return {};
     still_distance:
       id: radar_still_distance
       name: Radar Still Distance
       filters:
         - throttle_with_priority: 1000ms
         - lambda: |-
-            if (!id(radar_has_still_target).state) return NAN;
-            if (id(reduce_db_reporting).state) {
-              static float last = 0;
-              if (abs(x - last) < 5) return {};
-              last = x;
+            static float last = NAN;
+            static uint32_t last_report_ms = 0;
+            if (!id(radar_has_still_target).state) {
+              if (isnan(last)) return {};
+              last = NAN;
+              last_report_ms = millis();
+              return NAN;
             }
-            return x;
+            if (!id(reduce_db_reporting).state || isnan(last) ||
+                abs(x - last) >= 5 || millis() - last_report_ms >= 60000) {
+              last = x;
+              last_report_ms = millis();
+              return x;
+            }
+            return {};
     still_energy:
       id: radar_still_energy
       name: Radar Still Energy
       filters:
         - throttle_with_priority: 1000ms
         - lambda: |-
-            if (id(reduce_db_reporting).state) return {};
-            return x;
+            static float last = NAN;
+            static uint32_t last_report_ms = 0;
+            if (!id(reduce_db_reporting).state || isnan(last) ||
+                abs(x - last) >= 5 || millis() - last_report_ms >= 60000) {
+              last = x;
+              last_report_ms = millis();
+              return x;
+            }
+            return {};
 
 switch:
   - platform: ld2410

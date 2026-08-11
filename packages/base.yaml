@@ -1,3 +1,6 @@
+packages:
+  diagnostics: !include diagnostics.yaml
+
 api:
   encryption:
     key: !secret api_encryption_key

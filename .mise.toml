@@ -11,7 +11,7 @@ for config_file in *.yaml; do
   if [ "$config_file" = "secrets.yaml" ]; then
     continue
   fi
-  esphome config "$config_file"
+  esphome config "$config_file" >/dev/null
 done
 """
 

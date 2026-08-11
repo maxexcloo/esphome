@@ -13,6 +13,18 @@ static constexpr uint8_t CALIBRATION_FACTOR_REGISTER = 0x40;
 static constexpr uint8_t TARE_REGISTER = 0x50;
 static constexpr uint8_t WEIGHT_REGISTER = 0x10;
 
+inline float read_weight(esphome::i2c::I2CDevice *device) {
+  uint8_t data[sizeof(float)];
+  if (device->read_register(WEIGHT_REGISTER, data, sizeof(data)) !=
+      esphome::i2c::ERROR_OK) {
+    return NAN;
+  }
+
+  float weight;
+  std::memcpy(&weight, data, sizeof(weight));
+  return weight;
+}
+
 inline bool tare(esphome::i2c::I2CDevice *device, const char *name) {
   const uint8_t command = 1;
   if (device->write_register(TARE_REGISTER, &command, sizeof(command)) !=
@@ -32,20 +44,18 @@ inline bool calibrate(esphome::i2c::I2CDevice *device, const char *name,
     return false;
   }
 
-  uint8_t data[4];
-  if (device->read_register(WEIGHT_REGISTER, data, sizeof(data)) !=
-      esphome::i2c::ERROR_OK) {
+  const float measured_weight = read_weight(device);
+  if (!std::isfinite(measured_weight)) {
     ESP_LOGE(TAG, "%s weight read failed during calibration", name);
     return false;
   }
 
-  float measured_weight;
-  std::memcpy(&measured_weight, data, sizeof(measured_weight));
-  if (!std::isfinite(measured_weight) || std::fabs(measured_weight) < 0.05f) {
+  if (std::fabs(measured_weight) < 0.05f) {
     ESP_LOGE(TAG, "%s calibration requires a known weight on the scale", name);
     return false;
   }
 
+  uint8_t data[sizeof(float)];
   if (device->read_register(CALIBRATION_FACTOR_REGISTER, data, sizeof(data)) !=
       esphome::i2c::ERROR_OK) {
     ESP_LOGE(TAG, "%s calibration factor read failed", name);

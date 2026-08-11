@@ -30,8 +30,6 @@ fan:
 mcp4xxx:
   - cs_pin: GPIO18
     id: digipot
-    initial_value: 0
-    internal: true
 
 sensor:
   - platform: rotary_encoder

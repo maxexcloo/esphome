@@ -1,22 +1,20 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
-from esphome.components import number, spi
+from esphome.components import spi
+from esphome.const import CONF_ID
 
 CODEOWNERS = ["@ellsclytn"]
 DEPENDENCIES = ["spi"]
-AUTO_LOAD = ["number", "fan"]
+AUTO_LOAD = ["fan"]
 MULTI_CONF = True
 
-CONF_INITIAL_VALUE = "initial_value"
-
 mcp4xxx_ns = cg.esphome_ns.namespace("mcp4xxx")
-MCP4XXX = mcp4xxx_ns.class_("MCP4XXX", number.Number, cg.Component, spi.SPIDevice)
+MCP4XXX = mcp4xxx_ns.class_("MCP4XXX", cg.Component, spi.SPIDevice)
 
 CONFIG_SCHEMA = (
-    number.number_schema(MCP4XXX)
-    .extend(
+    cv.Schema(
         {
-            cv.Optional(CONF_INITIAL_VALUE, default=0): cv.int_range(min=0, max=128),
+            cv.GenerateID(): cv.declare_id(MCP4XXX),
         }
     )
     .extend(cv.COMPONENT_SCHEMA)
@@ -25,8 +23,6 @@ CONFIG_SCHEMA = (
 
 
 async def to_code(config):
-    var = await number.new_number(config, min_value=0, max_value=128, step=1)
+    var = cg.new_Pvariable(config[CONF_ID])
     await cg.register_component(var, config)
     await spi.register_spi_device(var, config)
-
-    cg.add(var.set_initial_value(config[CONF_INITIAL_VALUE]))

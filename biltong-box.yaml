@@ -4,7 +4,6 @@ substitutions:
 
 packages:
   base: !include packages/base.yaml
-  diagnostics: !include packages/diagnostics.yaml
   web_server: !include packages/web-server.yaml
 
 button:
@@ -202,90 +201,42 @@ sensor:
     state_class: measurement
     unit_of_measurement: g
     update_interval: 5s
-    lambda: |-
-      uint8_t data[4];
-      if (id(scale_1).read_register(0x10, data, sizeof(data)) !=
-          esphome::i2c::ERROR_OK) {
-        return NAN;
-      }
-      float weight;
-      memcpy(&weight, data, sizeof(weight));
-      return weight;
+    lambda: return mini_scale::read_weight(id(scale_1));
   - platform: template
     device_class: weight
     name: Scale 2 Weight
     state_class: measurement
     unit_of_measurement: g
     update_interval: 5s
-    lambda: |-
-      uint8_t data[4];
-      if (id(scale_2).read_register(0x10, data, sizeof(data)) !=
-          esphome::i2c::ERROR_OK) {
-        return NAN;
-      }
-      float weight;
-      memcpy(&weight, data, sizeof(weight));
-      return weight;
+    lambda: return mini_scale::read_weight(id(scale_2));
   - platform: template
     device_class: weight
     name: Scale 3 Weight
     state_class: measurement
     unit_of_measurement: g
     update_interval: 5s
-    lambda: |-
-      uint8_t data[4];
-      if (id(scale_3).read_register(0x10, data, sizeof(data)) !=
-          esphome::i2c::ERROR_OK) {
-        return NAN;
-      }
-      float weight;
-      memcpy(&weight, data, sizeof(weight));
-      return weight;
+    lambda: return mini_scale::read_weight(id(scale_3));
   - platform: template
     device_class: weight
     name: Scale 4 Weight
     state_class: measurement
     unit_of_measurement: g
     update_interval: 5s
-    lambda: |-
-      uint8_t data[4];
-      if (id(scale_4).read_register(0x10, data, sizeof(data)) !=
-          esphome::i2c::ERROR_OK) {
-        return NAN;
-      }
-      float weight;
-      memcpy(&weight, data, sizeof(weight));
-      return weight;
+    lambda: return mini_scale::read_weight(id(scale_4));
   - platform: template
     device_class: weight
     name: Scale 5 Weight
     state_class: measurement
     unit_of_measurement: g
     update_interval: 5s
-    lambda: |-
-      uint8_t data[4];
-      if (id(scale_5).read_register(0x10, data, sizeof(data)) !=
-          esphome::i2c::ERROR_OK) {
-        return NAN;
-      }
-      float weight;
-      memcpy(&weight, data, sizeof(weight));
-      return weight;
+    lambda: return mini_scale::read_weight(id(scale_5));
   - platform: template
     device_class: weight
     name: Scale 6 Weight
     state_class: measurement
     unit_of_measurement: g
     update_interval: 5s
-    lambda: |-
-      uint8_t data[4];
-      if (id(scale_6).read_register(0x10, data, sizeof(data)) !=
-          esphome::i2c::ERROR_OK) {
-        return NAN;
-      }
-      float weight;
-      memcpy(&weight, data, sizeof(weight));
-      return weight;
+    lambda: return mini_scale::read_weight(id(scale_6));
 
 # ENV III's QMP6988 already uses 0x70 on the Grove bus. Set the PaHub v2.1
 # DIP switches to address 0x71 before connecting it through the Grove Y cable.

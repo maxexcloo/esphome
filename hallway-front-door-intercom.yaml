@@ -4,14 +4,13 @@ substitutions:
 
 packages:
   base: !include packages/base.yaml
-  diagnostics: !include packages/diagnostics.yaml
   web_server: !include packages/web-server.yaml
 
 binary_sensor:
   - platform: template
     icon: mdi:bell-ring
-    id: call_active
-    name: Call Active
+    id: recent_call
+    name: Recent Call
   - platform: template
     device_class: sound
     icon: mdi:volume-high
@@ -48,13 +47,12 @@ interval:
     then:
       - lambda: |-
           const uint32_t silent_ms = millis() - id(last_rx_ms);
-          const bool call = id(has_received_frame) && silent_ms > 3000 && silent_ms < 600000;
-          if (id(call_active).state != call) {
-            id(call_active).publish_state(call);
+          // An RS-485 frame indicates a call; retain it for ten minutes after
+          // the most recent frame so Home Assistant cannot miss the event.
+          const bool recent_call_state = id(has_received_frame) && silent_ms < 600000;
+          if (id(recent_call).state != recent_call_state) {
+            id(recent_call).publish_state(recent_call_state);
           }
-
-logger:
-  level: DEBUG
 
 sensor:
   - platform: pulse_counter
@@ -73,7 +71,6 @@ switch:
 
 uart:
   baud_rate: 9600
-  id: rs485_bus
   rx_pin: GPIO32
   tx_pin: GPIO26
   debug:
@@ -83,4 +80,3 @@ uart:
       - lambda: |-
           id(has_received_frame) = true;
           id(last_rx_ms) = millis();
-          UARTDebug::log_hex(direction, bytes, ':', debug_prefix);

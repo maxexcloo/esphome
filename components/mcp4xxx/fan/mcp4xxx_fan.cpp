@@ -9,28 +9,20 @@ static const char *const TAG = "mcp4xxx.fan";
 void MCP4XXXFan::setup() {
   ESP_LOGCONFIG(TAG, "Setting up MCP4XXX Fan...");
 
-  // Configure fan traits
   this->traits_.set_supported_speed_count(this->speed_count_);
   this->traits_.set_speed(true);
 
-  // Set initial wiper value to minimum and disable terminals (fan off) using parent component
-  if (this->parent_ != nullptr) {
-    if (!this->parent_->write_wiper_value(0)) {
-      ESP_LOGE(TAG, "Failed to initialise wiper position");
-      this->mark_failed();
-      return;
-    }
-
-    // Start with fan off by disconnecting terminals
-    if (!this->parent_->disable_terminals()) {
-      ESP_LOGE(TAG, "Failed to disable terminals");
-      this->mark_failed();
-      return;
-    }
+  auto restore = this->restore_state_();
+  if (restore.has_value()) {
+    this->state = restore->state;
+    this->speed = restore->speed;
   }
 
-  this->current_wiper_value_ = 0;
-  this->state = false;  // Fan starts off
+  if (!this->write_state_(this->state, this->speed)) {
+    this->mark_failed();
+    return;
+  }
+  this->publish_state();
 }
 
 void MCP4XXXFan::dump_config() {
@@ -39,56 +31,48 @@ void MCP4XXXFan::dump_config() {
   ESP_LOGCONFIG(TAG, "  Speed Count: %d", this->speed_count_);
   ESP_LOGCONFIG(TAG, "  Uses TCON register for on/off control");
   if (this->is_failed()) {
-    ESP_LOGE(TAG, "Communication with MCP4XXX failed!");
+    ESP_LOGE(TAG, "MCP4XXX fan interface is unavailable");
   }
 }
 
 void MCP4XXXFan::control(const fan::FanCall &call) {
-  if (call.get_state().has_value()) {
-    bool state = *call.get_state();
-    ESP_LOGD(TAG, "Setting fan state to %s", state ? "ON" : "OFF");
-
-    // Use TCON register to control terminal connections for on/off
-    if (this->parent_ != nullptr) {
-      if (state) {
-        // Fan on: enable all terminals
-        if (!this->parent_->enable_terminals()) {
-          ESP_LOGE(TAG, "Failed to enable terminals");
-        }
-      } else {
-        // Fan off: disable all terminals
-        if (!this->parent_->disable_terminals()) {
-          ESP_LOGE(TAG, "Failed to disable terminals");
-        }
-      }
-    }
-
-    this->state = state;
+  const bool target_state = call.get_state().value_or(this->state);
+  int target_speed = call.get_speed().value_or(this->speed);
+  if (target_state && target_speed < 1) {
+    target_speed = this->speed_count_;
   }
 
-  if (call.get_speed().has_value()) {
-    int speed_level = *call.get_speed();
-    ESP_LOGD(TAG, "Setting fan speed to level %d", speed_level);
-
-    uint8_t wiper_value = this->speed_level_to_wiper_value(speed_level);
-
-    if (this->parent_ != nullptr && this->parent_->write_wiper_value(wiper_value)) {
-      this->current_wiper_value_ = wiper_value;
-      this->speed = speed_level;
-      ESP_LOGD(TAG, "Set wiper value to %d for speed level %d", wiper_value, speed_level);
-    } else {
-      ESP_LOGE(TAG, "Failed to set wiper value to %d", wiper_value);
-    }
+  if (!this->write_state_(target_state, target_speed)) {
+    return;
   }
 
+  this->state = target_state;
+  this->speed = target_speed;
   this->publish_state();
 }
 
-void MCP4XXXFan::write_state_() {
-  // This method is called internally when we need to update the physical state
-  // Most of the work is done in control() method
-}
+bool MCP4XXXFan::write_state_(bool state, int speed) {
+  if (this->parent_ == nullptr) {
+    ESP_LOGE(TAG, "MCP4XXX parent is not configured");
+    return false;
+  }
 
+  if (!state) {
+    return this->parent_->disable_terminals();
+  }
+
+  const uint8_t wiper_value = this->speed_level_to_wiper_value(speed);
+  if (!this->parent_->write_wiper_value(wiper_value)) {
+    ESP_LOGE(TAG, "Failed to set wiper value to %d", wiper_value);
+    return false;
+  }
+  if (!this->parent_->enable_terminals()) {
+    ESP_LOGE(TAG, "Failed to enable terminals");
+    return false;
+  }
+
+  return true;
+}
 
 uint8_t MCP4XXXFan::speed_level_to_wiper_value(int speed_level) {
   if (speed_level <= 0) {

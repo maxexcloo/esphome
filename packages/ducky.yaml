@@ -1,0 +1,11 @@
+esp32:
+  board: seeed_xiao_esp32c6
+  variant: esp32c6
+
+light:
+  - platform: esp32_rmt_led_strip
+    chipset: ws2812
+    name: ${light_name}
+    num_leds: ${light_num_leds}
+    pin: GPIO2
+    rgb_order: GRB
