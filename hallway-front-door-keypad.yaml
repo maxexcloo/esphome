@@ -10,7 +10,7 @@ esp32:
 
 external_components:
   - components: [switchbot_keypad_bridge]
-    source: github://pierluigizagaria/switchbot-keypad-bridge@ee233e30f7229eedcc4e9aa2c6bc532498c4b4d5
+    source: github://pierluigizagaria/switchbot-keypad-bridge
 
 light:
   - platform: esp32_rmt_led_strip

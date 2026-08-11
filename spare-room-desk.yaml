@@ -5,7 +5,7 @@ substitutions:
   tx_pin: GPIO32
 
 packages:
-  deskup_pro: github://smarthomeguys/deskup-pro-controller-rj12/deskup-pro-controller.yaml@efe4780eb1796300464232e5ccff8424f142a8df
+  deskup_pro: github://smarthomeguys/deskup-pro-controller-rj12/deskup-pro-controller.yaml
 
 api:
   encryption:
