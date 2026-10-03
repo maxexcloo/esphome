@@ -7,6 +7,12 @@ packages:
 
 esp32:
   board: m5stack-atom
+  framework:
+    advanced:
+      # The bridge omits these dependencies for its pairing UI and cloud client.
+      include_builtin_idf_components:
+        - esp_http_server
+        - json
 
 external_components:
   - components: [switchbot_keypad_bridge]
@@ -14,12 +20,12 @@ external_components:
 
 light:
   - platform: esp32_rmt_led_strip
+    channel_colors: GRB
     chipset: sk6812
     internal: true
     name: Status LED
     num_leds: 1
     pin: GPIO27
-    rgb_order: GRB
 
 switchbot_keypad_bridge:
   keypad:
