@@ -60,13 +60,13 @@ button:
 
 light:
   - platform: esp32_rmt_led_strip
+    channel_colors: GRB
     chipset: sk6812
     id: status_led
     internal: true
     name: Status LED
     num_leds: 1
     pin: GPIO27
-    rgb_order: GRB
 
 remote_receiver:
   pin:

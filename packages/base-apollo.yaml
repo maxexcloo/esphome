@@ -10,10 +10,8 @@ esphome:
     name: ApolloAutomation.MSR-2
 
 ota:
-  - id: !extend ota_esphome
-    password: !secret ota_password
-
-safe_mode:
+  - encryption:
+    id: !extend ota_esphome
 
 sensor:
   - id: !extend wifi_signal_db

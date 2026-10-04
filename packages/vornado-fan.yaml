@@ -13,7 +13,6 @@ binary_sensor:
 
 esp32:
   board: esp32-c6-devkitc-1
-  variant: esp32c6
 
 external_components:
   - components: [mcp4xxx]
@@ -25,7 +24,6 @@ fan:
     mcp4xxx_id: digipot
     name: Fan
     restore_mode: RESTORE_DEFAULT_OFF
-    speed_count: 100
 
 mcp4xxx:
   - cs_pin: GPIO18
@@ -39,6 +37,10 @@ sensor:
     pin_b: GPIO23
     on_anticlockwise:
       - lambda: |-
+          if (!id(vornado).state) {
+            return;
+          }
+
           int fan_speed = id(vornado).speed - 5;
 
           if (fan_speed < 1) {

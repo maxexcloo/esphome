@@ -5,11 +5,9 @@ substitutions:
   tx_pin: GPIO32
 
 packages:
-  deskup_pro: github://smarthomeguys/deskup-pro-controller-rj12/deskup-pro-controller.yaml
-
-api:
-  encryption:
-    key: !secret api_encryption_key
+  # Apply local base settings after the upstream defaults.
+  deskup_pro: github://smarthomeguys/deskup-pro-controller-rj12/deskup-pro-controller.yaml@d7e75ce1aba5330b1808bc5cf5af383fdebd9bbb
+  base: !include packages/base.yaml
 
 button:
   - id: !extend button_reboot
@@ -19,20 +17,13 @@ esp32:
   board: m5stack-atom
 
 esphome:
-  friendly_name: ${name_friendly}
-  name: ${name}
   name_add_mac_suffix: false
   project:
     name: Espressif.m5stack-atom
 
-logger:
-  level: WARN
-
 ota:
-  - id: !extend ota_esphome
-    password: !secret ota_password
-
-safe_mode:
+  # Use the authenticated OTA platform from base instead of the upstream entry.
+  - id: !remove ota_esphome
 
 sensor:
   - id: !extend sensor_deviceuptime
@@ -41,8 +32,3 @@ sensor:
     disabled_by_default: true
     entity_category: diagnostic
     name: WiFi Signal
-    update_interval: 60s
-
-wifi:
-  password: !secret wifi_password
-  ssid: !secret wifi_ssid

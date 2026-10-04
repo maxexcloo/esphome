@@ -1,6 +1,3 @@
-packages:
-  diagnostics: !include diagnostics.yaml
-
 api:
   encryption:
     key: !secret api_encryption_key
@@ -14,9 +11,8 @@ logger:
 
 ota:
   - platform: esphome
-    password: !secret ota_password
-
-safe_mode:
+    encryption:
+    id: ota_native
 
 wifi:
   password: !secret wifi_password
