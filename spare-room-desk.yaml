@@ -21,6 +21,14 @@ esphome:
   project:
     name: Espressif.m5stack-atom
 
+light:
+  - channel_colors: GRB
+    chipset: sk6812
+    id: !extend light_esp32led
+    # The Atom's onboard LED uses GPIO27; upstream targets an ESP32-S3.
+    pin: GPIO27
+    rgb_order: !remove
+
 ota:
   # Use the authenticated OTA platform from base instead of the upstream entry.
   - id: !remove ota_esphome
@@ -32,3 +40,7 @@ sensor:
     disabled_by_default: true
     entity_category: diagnostic
     name: WiFi Signal
+
+# Upstream's update manifest contains ESP32-S3 firmware, not this Atom build.
+update:
+  - id: !remove update_http_request

@@ -11,6 +11,8 @@ packages:
   web_server: !include packages/web-server.yaml
 
 # Zone calculations use raw distances so reporting filters cannot delay occupancy.
+# Clamp reversed boundaries upwards; collapsed zones 2 and 3 remain empty.
+# Saved settings are retained, and correctly ordered boundaries are unchanged.
 binary_sensor:
   - platform: ld2410
     has_moving_target:
@@ -28,30 +30,48 @@ binary_sensor:
     id: radar_zone_1_occupancy
     name: Radar Zone 1 Occupancy
     lambda: |-
-      bool still_in_zone = id(radar_has_still_target).state && (id(radar_still_distance).get_raw_state() >= id(radar_z1_start).state) && (id(radar_still_distance).get_raw_state() <= id(radar_z1_end).state);
-      bool moving_in_zone = id(radar_has_moving_target).state && (id(radar_moving_distance).get_raw_state() >= id(radar_z1_start).state) && (id(radar_moving_distance).get_raw_state() <= id(radar_z1_end).state);
-
-      return still_in_zone || moving_in_zone;
+      const float start = id(radar_z1_start).state;
+      const float end_1 = std::max(start, id(radar_z1_end).state);
+      const auto in_zone = [&](float distance) {
+        return distance >= start && distance <= end_1;
+      };
+      return (id(radar_has_still_target).state &&
+              in_zone(id(radar_still_distance).get_raw_state())) ||
+             (id(radar_has_moving_target).state &&
+              in_zone(id(radar_moving_distance).get_raw_state()));
   - platform: template
     device_class: occupancy
     icon: mdi:motion-sensor
     id: radar_zone_2_occupancy
     name: Radar Zone 2 Occupancy
     lambda: |-
-      bool still_in_zone = id(radar_has_still_target).state && (id(radar_still_distance).get_raw_state() > id(radar_z1_end).state) && (id(radar_still_distance).get_raw_state() <= id(radar_z2_end).state);
-      bool moving_in_zone = id(radar_has_moving_target).state && (id(radar_moving_distance).get_raw_state() > id(radar_z1_end).state) && (id(radar_moving_distance).get_raw_state() <= id(radar_z2_end).state);
-
-      return still_in_zone || moving_in_zone;
+      const float start = id(radar_z1_start).state;
+      const float end_1 = std::max(start, id(radar_z1_end).state);
+      const float end_2 = std::max(end_1, id(radar_z2_end).state);
+      const auto in_zone = [&](float distance) {
+        return distance > end_1 && distance <= end_2;
+      };
+      return (id(radar_has_still_target).state &&
+              in_zone(id(radar_still_distance).get_raw_state())) ||
+             (id(radar_has_moving_target).state &&
+              in_zone(id(radar_moving_distance).get_raw_state()));
   - platform: template
     device_class: occupancy
     icon: mdi:motion-sensor
     id: radar_zone_3_occupancy
     name: Radar Zone 3 Occupancy
     lambda: |-
-      bool still_in_zone = id(radar_has_still_target).state && (id(radar_still_distance).get_raw_state() > id(radar_z2_end).state) && (id(radar_still_distance).get_raw_state() <= id(radar_z3_end).state);
-      bool moving_in_zone = id(radar_has_moving_target).state && (id(radar_moving_distance).get_raw_state() > id(radar_z2_end).state) && (id(radar_moving_distance).get_raw_state() <= id(radar_z3_end).state);
-
-      return still_in_zone || moving_in_zone;
+      const float start = id(radar_z1_start).state;
+      const float end_1 = std::max(start, id(radar_z1_end).state);
+      const float end_2 = std::max(end_1, id(radar_z2_end).state);
+      const float end_3 = std::max(end_2, id(radar_z3_end).state);
+      const auto in_zone = [&](float distance) {
+        return distance > end_2 && distance <= end_3;
+      };
+      return (id(radar_has_still_target).state &&
+              in_zone(id(radar_still_distance).get_raw_state())) ||
+             (id(radar_has_moving_target).state &&
+              in_zone(id(radar_moving_distance).get_raw_state()));
   - platform: template
     device_class: occupancy
     icon: mdi:motion-sensor
@@ -204,7 +224,7 @@ sensor:
               last_report_ms = millis();
               return NAN;
             }
-            if (!id(reduce_db_reporting).state || isnan(last) ||
+            if (isnan(last) ||
                 abs(x - last) >= 5 || millis() - last_report_ms >= 60000) {
               last = x;
               last_report_ms = millis();
@@ -270,7 +290,7 @@ sensor:
               last_report_ms = millis();
               return NAN;
             }
-            if (!id(reduce_db_reporting).state || isnan(last) ||
+            if (isnan(last) ||
                 abs(x - last) >= 5 || millis() - last_report_ms >= 60000) {
               last = x;
               last_report_ms = millis();
@@ -285,7 +305,7 @@ sensor:
         - lambda: |-
             static float last = NAN;
             static uint32_t last_report_ms = 0;
-            if (!id(reduce_db_reporting).state || isnan(last) ||
+            if (isnan(last) ||
                 abs(x - last) >= 5 || millis() - last_report_ms >= 60000) {
               last = x;
               last_report_ms = millis();
@@ -306,7 +326,7 @@ sensor:
               last_report_ms = millis();
               return NAN;
             }
-            if (!id(reduce_db_reporting).state || isnan(last) ||
+            if (isnan(last) ||
                 abs(x - last) >= 5 || millis() - last_report_ms >= 60000) {
               last = x;
               last_report_ms = millis();
@@ -321,7 +341,7 @@ sensor:
         - lambda: |-
             static float last = NAN;
             static uint32_t last_report_ms = 0;
-            if (!id(reduce_db_reporting).state || isnan(last) ||
+            if (isnan(last) ||
                 abs(x - last) >= 5 || millis() - last_report_ms >= 60000) {
               last = x;
               last_report_ms = millis();

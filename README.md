@@ -15,7 +15,8 @@ GitHub app for this repository to receive update PRs; updates are not automerged
 
 ## Development
 
-Install the pinned tools and run all checks with Mise:
+Create `secrets.yaml` with the keys listed below, then install the pinned tools
+and run all checks with Mise:
 
 ```shell
 mise install
@@ -23,6 +24,16 @@ mise run check
 ```
 
 Format Python components with `mise run fmt`.
+
+Compile affected devices after changing hardware, frameworks, external components,
+or lambdas:
+
+```shell
+mise exec -- esphome compile bedroom-fan.yaml
+```
+
+CI validates every device and compiles one configuration from each hardware and
+component combination. These checks do not upload firmware or test physical devices.
 
 ## Layout
 

@@ -16,10 +16,11 @@ static const uint8_t MCP4XXX_WRITE_COMMAND = 0x00;  // C1=0, C0=0
 // Maximum wiper value (7-bit: 0-128, 129 steps)
 static const uint8_t MCP4XXX_MAX_VALUE = 128;
 
-// TCON register bit masks
-static const uint8_t MCP4XXX_TCON_R0A = 0x08;  // Terminal A connect bit (bit 3)
-static const uint8_t MCP4XXX_TCON_R0W = 0x04;  // Wiper connect bit (bit 2)
-static const uint8_t MCP4XXX_TCON_R0B = 0x02;  // Terminal B connect bit (bit 1)
+// Microchip DS22060B, register 4-2: keep R0HW (bit 3) set so terminal
+// controls apply; clearing it forces the wiper onto terminal B.
+static const uint8_t MCP4XXX_TCON_R0A = 0x04;  // Terminal A connect bit (bit 2)
+static const uint8_t MCP4XXX_TCON_R0W = 0x02;  // Wiper connect bit (bit 1)
+static const uint8_t MCP4XXX_TCON_R0B = 0x01;  // Terminal B connect bit (bit 0)
 static const uint8_t MCP4XXX_TCON_DEFAULT = 0xFF;  // All terminals connected
 
 class MCP4XXX : public Component,
