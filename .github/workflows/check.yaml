@@ -41,15 +41,9 @@ jobs:
         run: mise run check
       - name: Discover devices
         id: devices
-        shell: python
         run: |
-          import json
-          import os
-          from pathlib import Path
-
-          configurations = sorted(path.name for path in Path('.').glob('*.yaml') if path.name != 'secrets.yaml')
-          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
-              print(f'configurations={json.dumps(configurations)}', file=output)
+          configurations=$(jq -cn '$ARGS.positional - ["secrets.yaml"]' --args -- *.yaml)
+          echo "configurations=$configurations" >> "$GITHUB_OUTPUT"
   compile:
     name: Compile ${{ matrix.configuration }}
     needs: check
