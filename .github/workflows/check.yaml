@@ -18,6 +18,8 @@ jobs:
   check:
     name: Check
     runs-on: ubuntu-latest
+    outputs:
+      configurations: ${{ steps.devices.outputs.configurations }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -37,6 +39,17 @@ jobs:
             >secrets.yaml
       - name: Run checks
         run: mise run check
+      - name: Discover devices
+        id: devices
+        shell: python
+        run: |
+          import json
+          import os
+          from pathlib import Path
+
+          configurations = sorted(path.name for path in Path('.').glob('*.yaml') if path.name != 'secrets.yaml')
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              print(f'configurations={json.dumps(configurations)}', file=output)
   compile:
     name: Compile ${{ matrix.configuration }}
     needs: check
@@ -44,15 +57,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        configuration:
-          - apollo-msr-2-2744d0.yaml
-          - bathroom-ducky.yaml
-          - bedroom-fan.yaml
-          - biltong-box.yaml
-          - hallway-front-door-intercom.yaml
-          - hallway-front-door-keypad.yaml
-          - living-room-speakers-remote.yaml
-          - spare-room-desk.yaml
+        configuration: ${{ fromJSON(needs.check.outputs.configurations) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
