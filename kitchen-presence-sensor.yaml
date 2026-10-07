@@ -1,0 +1,51 @@
+substitutions:
+  name: kitchen-presence-sensor
+  name_friendly: Kitchen Presence Sensor
+
+packages:
+  base: !include packages/base.yaml
+  diagnostics: !include packages/diagnostics.yaml
+  web_server: !include packages/web-server.yaml
+
+binary_sensor:
+  - platform: seeed_mr60bha2
+    has_target:
+      name: Radar Target
+
+# Seeed MR60BHA2 kit (114993387), powered by the XIAO ESP32C6.
+esp32:
+  board: seeed_xiao_esp32c6
+
+i2c:
+  scl: GPIO23
+  sda: GPIO22
+
+light:
+  - platform: esp32_rmt_led_strip
+    channel_colors: GRB
+    chipset: ws2812
+    internal: true
+    name: Status LED
+    num_leds: 1
+    pin: GPIO1
+
+seeed_mr60bha2:
+
+sensor:
+  - platform: bh1750
+    name: Illuminance
+  - platform: seeed_mr60bha2
+    breath_rate:
+      name: Respiratory Rate
+    distance:
+      name: Distance
+    heart_rate:
+      name: Heart Rate
+    num_targets:
+      name: Target Count
+
+# The kit's radar connection uses the XIAO's hardware UART pins.
+uart:
+  baud_rate: 115200
+  rx_pin: GPIO17
+  tx_pin: GPIO16
