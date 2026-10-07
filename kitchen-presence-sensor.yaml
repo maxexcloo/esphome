@@ -12,7 +12,6 @@ binary_sensor:
     has_target:
       name: Radar Target
 
-# Seeed MR60BHA2 kit (114993387), powered by the XIAO ESP32C6.
 esp32:
   board: seeed_xiao_esp32c6
 
@@ -44,7 +43,6 @@ sensor:
     num_targets:
       name: Target Count
 
-# The kit's radar connection uses the XIAO's hardware UART pins.
 uart:
   baud_rate: 115200
   rx_pin: GPIO17
