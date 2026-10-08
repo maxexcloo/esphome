@@ -34,7 +34,7 @@
 - Follow the naming pattern:
   - filename and `name`: lowercase kebab-case
   - `name_friendly`: title case
-- Use shared `base`, `diagnostics`, and `web_server` packages when applicable.
+- Use shared `base`, `diagnostics`, and `web-server` packages when applicable.
 - Use `.yaml`, never `.yml`, for project-owned YAML files unless external tooling
   requires a fixed filename.
 - Document non-obvious hardware requirements, such as pin conflicts, bus

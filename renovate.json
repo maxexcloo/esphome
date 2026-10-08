@@ -1,22 +1,18 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "dependencyDashboard": false,
+  "extends": ["config:recommended"],
   "customManagers": [
     {
       "currentValueTemplate": "main",
       "customType": "regex",
       "datasourceTemplate": "git-refs",
       "description": "Update ESPHome GitHub commit pins from upstream main branches",
-      "packageNameTemplate": "https://github.com/{{{depName}}}",
-      "managerFilePatterns": [
-        "/^[^/]+\\.yaml$/"
-      ],
+      "managerFilePatterns": ["/^[^/]+\\.yaml$/"],
       "matchStrings": [
         "github://(?<depName>[^/\\s]+/[^/@\\s]+)(?:/[^@\\s]+)?@(?<currentDigest>[a-f0-9]{40})"
-      ]
+      ],
+      "packageNameTemplate": "https://github.com/{{{depName}}}"
     }
-  ],
-  "extends": [
-    "config:recommended"
   ]
 }
