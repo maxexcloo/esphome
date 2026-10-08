@@ -36,6 +36,7 @@ sensor:
   - platform: seeed_mr60bha2
     breath_rate:
       name: Respiratory Rate
+      unit_of_measurement: breaths/min
     distance:
       name: Distance
     heart_rate:
