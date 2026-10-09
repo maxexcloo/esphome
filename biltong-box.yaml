@@ -134,36 +134,36 @@ esphome:
 
 i2c:
   # Dedicated SCCB bus for the OV3660 camera.
-  - frequency: 100kHz
-    id: camera_i2c
+  - id: camera_i2c
+    frequency: 100kHz
     scan: false
     scl: GPIO23
     sda: GPIO25
   # TimerCamera-F HY2.0-4P (Grove) port.
-  - frequency: 100kHz
-    id: grove_i2c
+  - id: grove_i2c
+    frequency: 100kHz
     scl: GPIO13
     sda: GPIO4
 
 i2c_device:
-  - address: 0x26
+  - id: scale_1
+    address: 0x26
     i2c_id: scale_bus_1
-    id: scale_1
-  - address: 0x26
+  - id: scale_2
+    address: 0x26
     i2c_id: scale_bus_2
-    id: scale_2
-  - address: 0x26
+  - id: scale_3
+    address: 0x26
     i2c_id: scale_bus_3
-    id: scale_3
-  - address: 0x26
+  - id: scale_4
+    address: 0x26
     i2c_id: scale_bus_4
-    id: scale_4
-  - address: 0x26
+  - id: scale_5
+    address: 0x26
     i2c_id: scale_bus_5
-    id: scale_5
-  - address: 0x26
+  - id: scale_6
+    address: 0x26
     i2c_id: scale_bus_6
-    id: scale_6
 
 number:
   - platform: template
@@ -180,8 +180,8 @@ number:
 
 # Keep password OTA until this device has been updated to ESPHome 2026.9 or later.
 ota:
-  - encryption: !remove
-    id: !extend ota_native
+  - id: !extend ota_native
+    encryption: !remove
     password: !secret ota_password
 
 psram:
@@ -248,9 +248,9 @@ sensor:
 # ENV III's QMP6988 already uses 0x70 on the Grove bus. Set the PaHub v2.1
 # DIP switches to address 0x71 before connecting it through the Grove Y cable.
 tca9548a:
-  - address: 0x71
+  - id: scales_hub
+    address: 0x71
     i2c_id: grove_i2c
-    id: scales_hub
     channels:
       - bus_id: scale_bus_1
         channel: 0

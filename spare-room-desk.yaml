@@ -10,8 +10,8 @@ packages:
   base: !include packages/base.yaml
 
 button:
-  - id: !extend button_reboot
-    name: ESP Reboot
+  - name: ESP Reboot
+    id: !extend button_reboot
 
 esp32:
   board: m5stack-atom
@@ -22,9 +22,9 @@ esphome:
     name: Espressif.m5stack-atom
 
 light:
-  - channel_colors: GRB
+  - id: !extend light_esp32led
+    channel_colors: GRB
     chipset: sk6812
-    id: !extend light_esp32led
     # The Atom's onboard LED uses GPIO27; upstream targets an ESP32-S3.
     pin: GPIO27
     rgb_order: !remove
@@ -34,8 +34,8 @@ ota:
   - id: !remove ota_esphome
 
 sensor:
-  - id: !extend sensor_deviceuptime
-    name: Uptime
+  - name: Uptime
+    id: !extend sensor_deviceuptime
   - platform: wifi_signal
     disabled_by_default: true
     entity_category: diagnostic

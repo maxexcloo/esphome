@@ -36,12 +36,12 @@ esp32:
   board: m5stack-atom
 
 globals:
-  - id: has_received_frame
+  - type: bool
+    id: has_received_frame
     initial_value: 'false'
-    type: bool
-  - id: last_rx_ms
+  - type: uint32_t
+    id: last_rx_ms
     initial_value: '0'
-    type: uint32_t
 
 interval:
   - interval: 1s
@@ -57,8 +57,8 @@ interval:
 
 # Keep password OTA until this device has been updated to ESPHome 2026.9 or later.
 ota:
-  - encryption: !remove
-    id: !extend ota_native
+  - id: !extend ota_native
+    encryption: !remove
     password: !secret ota_password
 
 sensor:

@@ -15,8 +15,8 @@ esp32:
   board: esp32-c6-devkitc-1
 
 external_components:
-  - components: [mcp4xxx]
-    source: components
+  - source: components
+    components: [mcp4xxx]
 
 fan:
   - platform: mcp4xxx
@@ -26,8 +26,8 @@ fan:
     restore_mode: RESTORE_DEFAULT_OFF
 
 mcp4xxx:
-  - cs_pin: GPIO18
-    id: digipot
+  - id: digipot
+    cs_pin: GPIO18
 
 sensor:
   - platform: rotary_encoder

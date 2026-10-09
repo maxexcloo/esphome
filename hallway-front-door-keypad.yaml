@@ -10,8 +10,8 @@ esp32:
   board: m5stack-atom
 
 external_components:
-  - components: [switchbot_keypad_bridge]
-    source: github://pierluigizagaria/switchbot-keypad-bridge@51d5049080232f4a2b7fa843a9411e57af88416b
+  - source: github://pierluigizagaria/switchbot-keypad-bridge@51d5049080232f4a2b7fa843a9411e57af88416b
+    components: [switchbot_keypad_bridge]
 
 light:
   - platform: esp32_rmt_led_strip

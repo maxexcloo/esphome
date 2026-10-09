@@ -1,10 +1,10 @@
 [tools]
-"pipx:esphome" = { version = "2026.9.1", uvx_args = "--python 3.14.8" }
+"pipx:esphome" = { uvx_args = "--python 3.14.8", version = "2026.9.1" }
 python = "3.14.8"
 ruff = "0.16.10"
 
 [tasks.check]
-description = "Lint components and validate device configurations"
+description = "Lint Components & Validate Device Configurations"
 run = """
 ruff check --extend-select I components
 ruff format --check components
@@ -22,7 +22,7 @@ done
 """
 
 [tasks.fmt]
-description = "Format Python components"
+description = "Format Python Components"
 run = """
 ruff check --fix --select I components
 ruff format components
