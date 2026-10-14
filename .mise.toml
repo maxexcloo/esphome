@@ -24,14 +24,6 @@ for config_file in *.yaml; do
 done
 """
 
-[tasks.fmt]
-description = "Format Python Components"
-run = """
-ruff check --fix --select I components
-ruff format components
-"""
-
-# Dependency Updates
 [tasks."dependencies:check"]
 description = "Preview Local Dependency Updates"
 run = """
@@ -51,4 +43,11 @@ if [ -n "${usage_labels:-}" ]; then
   set -- --labels "$usage_labels"
 fi
 updatecli pipeline apply --config .updatecli.d --disable-changelog --disable-udash-report --unique-tmp-dir "$@"
+"""
+
+[tasks.fmt]
+description = "Format Python Components"
+run = """
+ruff check --fix --select I components
+ruff format components
 """
