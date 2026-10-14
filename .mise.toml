@@ -3,9 +3,6 @@
 # python = "latest"
 # ruff = "latest"
 # updatecli = "latest"
-python = "3.15.0"
-ruff = "0.17.0"
-updatecli = "0.122.1"
 # ESPHome uses Python 3.14 independently of repository linting tools.
 "pipx:esphome" = { uvx_args = "--python 3.14.8", version = "2026.9.1" }
 
