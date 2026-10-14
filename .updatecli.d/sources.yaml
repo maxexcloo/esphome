@@ -19,11 +19,9 @@ targets:
     spec:
       matchpattern: (github://ApolloAutomation/MSR\-2(?:/[^@\s]+)?@)[a-f0-9]{40}
       replacepattern: ${1}{{ source "version" }}
+      searchpattern: true
       files:
-        - apollo-msr-2-2744d0.yaml
-        - apollo-msr-2-3f2654.yaml
-        - apollo-msr-2-9896d0.yaml
-        - apollo-msr-2-98974c.yaml
+        - "*.yaml"
 ---
 name: Update pierluigizagaria/switchbot-keypad-bridge Package Revision
 pipelineid: update-pierluigizagaria-switchbot-keypad-bridge-package-revision
@@ -45,8 +43,9 @@ targets:
     spec:
       matchpattern: (github://pierluigizagaria/switchbot\-keypad\-bridge(?:/[^@\s]+)?@)[a-f0-9]{40}
       replacepattern: ${1}{{ source "version" }}
+      searchpattern: true
       files:
-        - hallway-front-door-keypad.yaml
+        - "*.yaml"
 ---
 name: Update smarthomeguys/deskup-pro-controller-rj12 Package Revision
 pipelineid: update-smarthomeguys-deskup-pro-controller-rj12-package-revision
@@ -68,5 +67,6 @@ targets:
     spec:
       matchpattern: (github://smarthomeguys/deskup\-pro\-controller\-rj12(?:/[^@\s]+)?@)[a-f0-9]{40}
       replacepattern: ${1}{{ source "version" }}
+      searchpattern: true
       files:
-        - spare-room-desk.yaml
+        - "*.yaml"

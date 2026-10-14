@@ -1,12 +1,15 @@
 [tools]
-# ESPHome uses Python 3.14 independently of repository linting tools.
-"pipx:esphome" = { uvx_args = "--python 3.14.8", version = "2026.9.1" }
+# gh = "latest"
+# python = "latest"
+# ruff = "latest"
+# updatecli = "latest"
 python = "3.15.0"
 ruff = "0.17.0"
 updatecli = "0.122.1"
+# ESPHome uses Python 3.14 independently of repository linting tools.
+"pipx:esphome" = { uvx_args = "--python 3.14.8", version = "2026.9.1" }
 
 # Dependency Updates
-
 [tasks."dependencies:check"]
 description = "Preview Local Dependency Updates"
 run = """
@@ -29,25 +32,9 @@ updatecli pipeline apply --config .updatecli.d --disable-changelog --disable-uda
 """
 
 # Development
-
 [tasks.check]
 description = "Lint Components & Validate Device Configurations"
-run = """
-updatecli manifest validate --config .updatecli.d --disable-templating --strict
-ruff check --extend-select I components
-ruff format --check components
-config_log=$(mktemp)
-trap 'rm -f "$config_log"' EXIT
-for config_file in *.yaml; do
-  if [ "$config_file" = "secrets.yaml" ]; then
-    continue
-  fi
-  if ! esphome config "$config_file" >"$config_log"; then
-    cat "$config_log"
-    exit 1
-  fi
-done
-"""
+run = "bash scripts/check.sh"
 
 [tasks.fmt]
 description = "Format Python Components"
