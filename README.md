@@ -8,10 +8,9 @@ See `AGENTS.md`.
 
 ## Dependencies
 
-Remote ESPHome packages and components are pinned to commit hashes. The custom
-manager in `renovate.json` matches `github://` references in root device YAML files
-and proposes new hashes from each repository's `main` branch. Enable the Renovate
-GitHub app for this repository to receive update PRs; updates are not automerged.
+Remote ESPHome packages and components are pinned to commit hashes. Local
+Updatecli policies track their upstream branches and keep the ESPHome interpreter
+on Python 3.14. Review proposed changes before applying them.
 
 ## Development
 
@@ -61,3 +60,19 @@ native OTA encryption.
 - `ota_password` — Biltong Box and Hallway Front Door Intercom only
 - `wifi_password`
 - `wifi_ssid`
+
+## Dependency Updates
+
+Mise installs the pinned Updatecli CLI. Run `mise run dependencies:check` locally
+to preview updates from `.updatecli.d/`. GitHub authentication uses the existing
+`gh` login; credentials stay in the command process.
+
+Review compatibility and major upgrades separately, then apply a selected group:
+
+```sh
+mise run dependencies:update --labels group:tools
+```
+
+Use the groups declared in the policy, review the Git diff and run the project
+checks before committing or deploying. Updatecli changes local files; it does
+not create issues, pull requests, commits or deployments. Hosted Renovate is disabled.

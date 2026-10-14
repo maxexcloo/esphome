@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=https://www.updatecli.io/schema/latest/policy/manifest/config.json
+name: Update ApolloAutomation/MSR-2 Package Revision
+pipelineid: update-apolloautomation-msr-2-package-revision
+labels:
+  group: sources
+sources:
+  version:
+    kind: shell
+    spec:
+      command: |-
+        set -eu
+        revision=$(git ls-remote --exit-code https://github.com/ApolloAutomation/MSR-2.git refs/heads/main | awk 'NR == 1 { print $1 }')
+        test -n "$revision"
+        printf '%s\n' "$revision"
+targets:
+  devices:
+    kind: file
+    sourceid: version
+    spec:
+      matchpattern: (github://ApolloAutomation/MSR\-2(?:/[^@\s]+)?@)[a-f0-9]{40}
+      replacepattern: ${1}{{ source "version" }}
+      files:
+        - apollo-msr-2-2744d0.yaml
+        - apollo-msr-2-3f2654.yaml
+        - apollo-msr-2-9896d0.yaml
+        - apollo-msr-2-98974c.yaml
