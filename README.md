@@ -31,8 +31,8 @@ or lambdas:
 mise exec -- esphome compile bedroom-fan.yaml
 ```
 
-CI discovers root `*.yaml` files, excluding `secrets.yaml`, and validates and
-compiles every device. These checks do not upload firmware or test physical devices.
+Pull requests validate root `*.yaml` files, excluding `secrets.yaml`. Compile
+changed devices locally before uploading firmware; configuration checks do not test physical devices.
 
 ## Layout
 
