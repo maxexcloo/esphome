@@ -25,6 +25,8 @@ jobs:
           persist-credentials: false
       - name: Set Up Shared Tools & Tasks
         uses: maxexcloo/dotfiles/.github/actions/mise@main
+        with:
+          tools: actionlint pipx:esphome python ruff updatecli uv
       - name: Create Test Secrets
         run: |
           printf '%s\n' \
