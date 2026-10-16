@@ -9,11 +9,12 @@ targets:
     kind: shell
     spec:
       command: |
-        updates=$(mise outdated --bump --json --local) || exit "$?"
+        # Python follows its separate 3.14 compatibility policy.
+        updates=$(mise outdated --bump --json --local pipx:esphome) || exit "$?"
         if [ "$updates" = "{}" ]; then
           exit 0
         fi
         if [ "$DRY_RUN" = false ]; then
-          mise upgrade --bump --local --no-prune || exit "$?"
+          mise upgrade --bump --local --no-prune pipx:esphome || exit "$?"
         fi
         printf '%s\n' "$updates"

@@ -14,5 +14,5 @@ targets:
     sourceid: version
     spec:
       file: .mise.toml
-      matchpattern: (uvx_args = "--python )[0-9.]+(")
+      matchpattern: (python = ")[0-9.]+(")
       replacepattern: ${1}{{ source "version" }}${2}

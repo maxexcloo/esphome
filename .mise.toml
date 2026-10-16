@@ -3,8 +3,9 @@ python_paths = "components"
 ruff_args = "--extend-select I"
 
 [tools]
-# ESPHome uses Python 3.14 independently of repository linting tools.
-"pipx:esphome" = { uvx_args = "--python 3.14.8", version = "2026.9.1" }
+# Cache ESPHome and its compatible interpreter together under Mise.
+"pipx:esphome" = "2026.9.1"
+python = "3.14.8"
 
 # Development
 [tasks.check]
