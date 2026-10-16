@@ -1,4 +1,5 @@
 #include "mcp4xxx.h"
+#include <algorithm>
 #include "esphome/core/log.h"
 
 namespace esphome {
@@ -28,6 +29,22 @@ void MCP4XXX::dump_config() {
   LOG_PIN("  CS Pin: ", this->cs_);
   if (this->is_failed()) {
     ESP_LOGE(TAG, "MCP4XXX SPI interface is unavailable");
+  }
+}
+
+void MCP4XXX::write_state(float state) {
+  if (this->is_failed()) {
+    return;
+  }
+  if (state <= 0.0f) {
+    this->disable_terminals();
+    return;
+  }
+
+  // Keep at least one wiper step while on; update it before connecting terminals.
+  const uint8_t wiper_value = std::max<uint8_t>(1, static_cast<uint8_t>(state * MCP4XXX_MAX_VALUE));
+  if (this->write_wiper_value(wiper_value)) {
+    this->enable_terminals();
   }
 }
 

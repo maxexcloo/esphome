@@ -1,5 +1,6 @@
 #pragma once
 
+#include "esphome/components/output/float_output.h"
 #include "esphome/components/spi/spi.h"
 #include "esphome/core/component.h"
 
@@ -24,6 +25,7 @@ static const uint8_t MCP4XXX_TCON_R0B = 0x01;  // Terminal B connect bit (bit 0)
 static const uint8_t MCP4XXX_TCON_DEFAULT = 0xFF;  // All terminals connected
 
 class MCP4XXX : public Component,
+                public output::FloatOutput,
                 public spi::SPIDevice<spi::BIT_ORDER_MSB_FIRST, spi::CLOCK_POLARITY_LOW,
                                       spi::CLOCK_PHASE_LEADING, spi::DATA_RATE_200KHZ> {
  public:
@@ -37,6 +39,7 @@ class MCP4XXX : public Component,
   bool disable_terminals() { return set_terminal_connection(false, false, false); }
 
  protected:
+  void write_state(float state) override;
   bool write_tcon_register(uint8_t value);
 
   uint8_t create_command_byte(uint8_t address, uint8_t command, uint8_t data_bits = 0);

@@ -19,14 +19,15 @@ external_components:
     components: [mcp4xxx]
 
 fan:
-  - platform: mcp4xxx
+  - platform: speed
     id: vornado
-    mcp4xxx_id: digipot
     name: Fan
+    output: digipot
     restore_mode: RESTORE_DEFAULT_OFF
 
-mcp4xxx:
-  - id: digipot
+output:
+  - platform: mcp4xxx
+    id: digipot
     cs_pin: GPIO18
 
 sensor:
