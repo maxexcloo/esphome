@@ -5,13 +5,10 @@ labels:
   group: sources
 sources:
   version:
-    kind: shell
+    kind: gitcommit
     spec:
-      command: |-
-        set -eu
-        revision=$(git ls-remote --exit-code https://github.com/ApolloAutomation/MSR-2.git refs/heads/main | awk 'NR == 1 { print $1 }')
-        test -n "$revision"
-        printf '%s\n' "$revision"
+      branch: main
+      url: https://github.com/ApolloAutomation/MSR-2.git
 targets:
   devices:
     kind: file
@@ -29,13 +26,10 @@ labels:
   group: sources
 sources:
   version:
-    kind: shell
+    kind: gitcommit
     spec:
-      command: |-
-        set -eu
-        revision=$(git ls-remote --exit-code https://github.com/pierluigizagaria/switchbot-keypad-bridge.git refs/heads/main | awk 'NR == 1 { print $1 }')
-        test -n "$revision"
-        printf '%s\n' "$revision"
+      branch: main
+      url: https://github.com/pierluigizagaria/switchbot-keypad-bridge.git
 targets:
   devices:
     kind: file
@@ -53,13 +47,10 @@ labels:
   group: sources
 sources:
   version:
-    kind: shell
+    kind: gitcommit
     spec:
-      command: |-
-        set -eu
-        revision=$(git ls-remote --exit-code https://github.com/smarthomeguys/deskup-pro-controller-rj12.git refs/heads/main | awk 'NR == 1 { print $1 }')
-        test -n "$revision"
-        printf '%s\n' "$revision"
+      branch: main
+      url: https://github.com/smarthomeguys/deskup-pro-controller-rj12.git
 targets:
   devices:
     kind: file
