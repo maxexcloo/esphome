@@ -14,6 +14,9 @@ on Python 3.14. Review proposed changes before applying them.
 
 ## Development
 
+Install the [shared Mise configuration](https://github.com/maxexcloo/dotfiles#shared-tools--tasks)
+before running local Mise tasks.
+
 Create `secrets.yaml` with the keys listed below, then install the pinned tools
 and run all checks with Mise:
 

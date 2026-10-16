@@ -2,7 +2,7 @@
 name: Update ESPHome-Compatible Python
 pipelineid: update-esphome-compatible-python
 labels:
-  group: tools
+  group: python
 sources:
   version:
     kind: shell

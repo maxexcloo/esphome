@@ -1,19 +1,15 @@
+[vars]
+python_paths = "components"
+ruff_args = "--extend-select I"
+
 [tools]
-# gh = "latest"
-# python = "latest"
-# ruff = "latest"
-# updatecli = "latest"
 # ESPHome uses Python 3.14 independently of repository linting tools.
 "pipx:esphome" = { uvx_args = "--python 3.14.8", version = "2026.9.1" }
 
 # Development
 [tasks.check]
-description = "Lint Components & Validate Device Configurations"
+depends = ["check:actions", "check:python", "check:updates"]
 run = "bash scripts/check.sh"
 
 [tasks.fmt]
-description = "Format Python Components"
-run = """
-ruff check --fix --select I components
-ruff format components
-"""
+depends = ["fmt:python"]
