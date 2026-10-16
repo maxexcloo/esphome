@@ -21,7 +21,7 @@ targets:
       replacepattern: ${1}{{ source "version" }}
       searchpattern: true
       files:
-        - "*.yaml"
+        - packages/base-apollo.yaml
 ---
 name: Update pierluigizagaria/switchbot-keypad-bridge Package Revision
 pipelineid: update-pierluigizagaria-switchbot-keypad-bridge-package-revision

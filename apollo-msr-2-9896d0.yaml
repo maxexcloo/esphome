@@ -3,5 +3,4 @@ substitutions:
   name_friendly: Spare Room Presence Sensor
 
 packages:
-  apolloautomation.msr-2: github://ApolloAutomation/MSR-2/Integrations/ESPHome/MSR-2_BLE.yaml@dee988c50b0afd9765e21b0c3b59807bce152ec1
   base_apollo: !include packages/base-apollo.yaml
