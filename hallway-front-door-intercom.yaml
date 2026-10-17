@@ -48,6 +48,9 @@ interval:
     then:
       - lambda: |-
           const uint32_t silent_ms = millis() - id(last_rx_ms);
+          if (silent_ms >= 600000) {
+            id(has_received_frame) = false;
+          }
           // An RS-485 frame indicates a call; retain it for ten minutes after
           // the most recent frame so Home Assistant cannot miss the event.
           const bool recent_call_state = id(has_received_frame) && silent_ms < 600000;
