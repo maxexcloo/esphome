@@ -14,3 +14,11 @@ run = "bash scripts/check.sh"
 
 [tasks.fmt]
 depends = ["fmt:python"]
+
+# Dependencies
+# Python follows the separate 3.14 compatibility policy.
+[tasks."dependencies:mise:check"]
+run = "mise upgrade --bump --dry-run --local --no-prune pipx:esphome"
+
+[tasks."dependencies:mise:update"]
+run = "mise upgrade --bump --local --no-prune pipx:esphome"
