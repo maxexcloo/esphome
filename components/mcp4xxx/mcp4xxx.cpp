@@ -20,17 +20,14 @@ void MCP4XXX::setup() {
   ESP_LOGCONFIG(TAG, "Setting up MCP4XXX...");
 
   this->spi_setup();
+  if (!this->spi_is_ready()) {
+    ESP_LOGE(TAG, "SPI interface is unavailable");
+    this->mark_failed();
+    return;
+  }
 
-  if (!this->write_wiper_value(0)) {
-    ESP_LOGE(TAG, "Failed to set safe wiper value");
-    this->mark_failed();
-    return;
-  }
-  if (!this->disable_terminals()) {
-    ESP_LOGE(TAG, "Failed to set safe terminal state");
-    this->mark_failed();
-    return;
-  }
+  this->write_wiper_value(0);
+  this->disable_terminals();
 }
 
 void MCP4XXX::dump_config() {
@@ -52,25 +49,15 @@ void MCP4XXX::write_state(float state) {
 
   // Keep at least one wiper step while on; update it before connecting terminals.
   const uint8_t wiper_value = std::max<uint8_t>(1, static_cast<uint8_t>(state * MCP4XXX_MAX_VALUE));
-  if (this->write_wiper_value(wiper_value)) {
-    this->enable_terminals();
-  }
+  this->write_wiper_value(wiper_value);
+  this->enable_terminals();
 }
 
-bool MCP4XXX::disable_terminals() {
-  return this->write_register(MCP4XXX_TCON_ADDRESS, MCP4XXX_TERMINALS_DISCONNECTED);
-}
+void MCP4XXX::disable_terminals() { this->write_register(MCP4XXX_TCON_ADDRESS, MCP4XXX_TERMINALS_DISCONNECTED); }
 
-bool MCP4XXX::enable_terminals() {
-  return this->write_register(MCP4XXX_TCON_ADDRESS, MCP4XXX_TERMINALS_CONNECTED);
-}
+void MCP4XXX::enable_terminals() { this->write_register(MCP4XXX_TCON_ADDRESS, MCP4XXX_TERMINALS_CONNECTED); }
 
-bool MCP4XXX::write_register(uint8_t address, uint8_t value) {
-  if (!this->spi_is_ready()) {
-    ESP_LOGE(TAG, "Cannot write register before SPI setup");
-    return false;
-  }
-
+void MCP4XXX::write_register(uint8_t address, uint8_t value) {
   this->enable();
   // AD3..AD0 occupy bits 7..4; write-command and upper data bits are zero.
   this->write_byte(address << 4);
@@ -78,16 +65,9 @@ bool MCP4XXX::write_register(uint8_t address, uint8_t value) {
   this->disable();
 
   ESP_LOGVV(TAG, "Wrote register: address=0x%02X, data=0x%02X", address, value);
-  return true;
 }
 
-bool MCP4XXX::write_wiper_value(uint8_t value) {
-  if (value > MCP4XXX_MAX_VALUE) {
-    ESP_LOGE(TAG, "Invalid wiper value: %d (max: %d)", value, MCP4XXX_MAX_VALUE);
-    return false;
-  }
-  return this->write_register(MCP4XXX_WIPER0_ADDRESS, value);
-}
+void MCP4XXX::write_wiper_value(uint8_t value) { this->write_register(MCP4XXX_WIPER0_ADDRESS, value); }
 
 }  // namespace mcp4xxx
 }  // namespace esphome

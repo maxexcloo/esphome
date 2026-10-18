@@ -20,10 +20,10 @@ class MCP4XXX : public Component,
   void write_state(float state) override;
 
  private:
-  bool disable_terminals();
-  bool enable_terminals();
-  bool write_register(uint8_t address, uint8_t value);
-  bool write_wiper_value(uint8_t value);
+  void disable_terminals();
+  void enable_terminals();
+  void write_register(uint8_t address, uint8_t value);
+  void write_wiper_value(uint8_t value);
 };
 
 }  // namespace mcp4xxx
