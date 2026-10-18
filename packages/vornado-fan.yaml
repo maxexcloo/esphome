@@ -6,10 +6,8 @@ binary_sensor:
       - fan.toggle: vornado
     pin:
       inverted: true
+      mode: INPUT_PULLUP
       number: GPIO2
-      mode:
-        input: true
-        pullup: true
 
 esp32:
   board: esp32-c6-devkitc-1
@@ -27,8 +25,8 @@ fan:
 
 output:
   - platform: mcp4xxx
-    id: digipot
     cs_pin: GPIO18
+    id: digipot
 
 sensor:
   - platform: rotary_encoder
