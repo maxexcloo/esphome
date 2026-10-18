@@ -1,3 +1,10 @@
+# NEC codes from the speakers' remote.
+substitutions:
+  config_ir_address: 0xFF00
+  config_ir_mute_command: 0xBB44
+  config_ir_volume_down_command: 0xE916
+  config_ir_volume_up_command: 0xE619
+
 binary_sensor:
   - platform: gpio
     name: Button
