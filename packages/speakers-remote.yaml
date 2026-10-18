@@ -5,6 +5,9 @@ substitutions:
   config_ir_volume_down_command: 0xE916
   config_ir_volume_up_command: 0xE619
 
+packages:
+  m5stack_atom: !include m5stack-atom.yaml
+
 binary_sensor:
   - platform: gpio
     name: Button
@@ -64,19 +67,6 @@ button:
     on_press:
       - script.execute: flash_red
       - script.execute: volume_up
-
-esp32:
-  board: m5stack-atom
-
-light:
-  - platform: esp32_rmt_led_strip
-    channel_colors: GRB
-    chipset: sk6812
-    id: status_led
-    internal: true
-    name: Status LED
-    num_leds: 1
-    pin: GPIO27
 
 remote_receiver:
   pin:

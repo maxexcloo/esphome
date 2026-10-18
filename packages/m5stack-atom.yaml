@@ -1,0 +1,13 @@
+esp32:
+  board: m5stack-atom
+
+# Keep the onboard LED driven off instead of leaving it unmanaged.
+light:
+  - platform: esp32_rmt_led_strip
+    channel_colors: GRB
+    chipset: sk6812
+    id: status_led
+    internal: true
+    name: Status LED
+    num_leds: 1
+    pin: GPIO27
