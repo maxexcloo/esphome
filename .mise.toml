@@ -1,6 +1,5 @@
 [vars]
 python_paths = "components"
-ruff_args = "--extend-select I"
 
 [tools]
 # Cache ESPHome and its compatible interpreter together under Mise.
