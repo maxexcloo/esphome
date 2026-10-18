@@ -1,0 +1,29 @@
+button:
+  - platform: template
+    entity_category: config
+    name: Calibrate Scale ${scale}
+    on_press:
+      - lambda: |-
+          mini_scale::calibrate(
+              id(scale_${scale}), "Scale ${scale}", id(scale_calibration_weight).state);
+  - platform: template
+    entity_category: config
+    name: Tare Scale ${scale}
+    on_press:
+      - lambda: mini_scale::tare(id(scale_${scale}), "Scale ${scale}");
+
+i2c_device:
+  - id: scale_${scale}
+    address: 0x26
+    i2c_id: scale_bus_${scale}
+
+sensor:
+  # Unit Mini Scales returns its calibrated weight in grams as a
+  # little-endian IEEE-754 float from register 0x10.
+  - platform: template
+    device_class: weight
+    lambda: return mini_scale::read_weight(id(scale_${scale}));
+    name: Scale ${scale} Weight
+    state_class: measurement
+    unit_of_measurement: g
+    update_interval: 5s
