@@ -6,12 +6,6 @@ Device configurations for the homelab ESPHome devices.
 
 See `AGENTS.md`.
 
-## Dependencies
-
-Remote ESPHome packages and components are pinned to commit hashes. Local
-Updatecli policies track their upstream branches and keep the ESPHome interpreter
-on Python 3.14. Review proposed changes before applying them.
-
 ## Development
 
 Install the [shared Mise configuration](https://github.com/maxexcloo/dotfiles#shared-tools--tasks)
