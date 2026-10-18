@@ -44,3 +44,7 @@ sensor:
 # Upstream's update manifest contains ESP32-S3 firmware, not this Atom build.
 update:
   - id: !remove update_http_request
+
+# Disable upstream's plaintext browser OTA, which OTA encryption does not cover.
+web_server:
+  ota: false
