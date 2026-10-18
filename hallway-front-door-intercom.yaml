@@ -5,7 +5,6 @@ substitutions:
 packages:
   base: !include packages/base.yaml
   diagnostics: !include packages/diagnostics.yaml
-  web_server: !include packages/web-server.yaml
 
 binary_sensor:
   - platform: template
@@ -35,28 +34,11 @@ button:
 esp32:
   board: m5stack-atom
 
-globals:
-  - type: bool
-    id: has_received_frame
-    initial_value: 'false'
-  - type: uint32_t
-    id: last_rx_ms
-    initial_value: '0'
-
-interval:
-  - interval: 1s
-    then:
-      - lambda: |-
-          const uint32_t silent_ms = millis() - id(last_rx_ms);
-          if (silent_ms >= 600000) {
-            id(has_received_frame) = false;
-          }
-          // An RS-485 frame indicates a call; retain it for ten minutes after
-          // the most recent frame so Home Assistant cannot miss the event.
-          const bool recent_call_state = id(has_received_frame) && silent_ms < 600000;
-          if (id(recent_call).state != recent_call_state) {
-            id(recent_call).publish_state(recent_call_state);
-          }
+esphome:
+  on_boot:
+    - binary_sensor.template.publish:
+        id: recent_call
+        state: false
 
 # Keep password OTA until this device has been updated to ESPHome 2026.9 or later.
 ota:
@@ -73,11 +55,26 @@ sensor:
       mode: INPUT_PULLUP
       number: GPIO21
 
+script:
+  # An RS-485 frame indicates a call; retain it for ten minutes after the most
+  # recent frame so Home Assistant cannot miss the event.
+  - id: hold_recent_call
+    mode: restart
+    then:
+      - binary_sensor.template.publish:
+          id: recent_call
+          state: true
+      - delay: 10min
+      - binary_sensor.template.publish:
+          id: recent_call
+          state: false
+
 switch:
   - platform: gpio
     id: unlock_relay
     internal: true
     pin: GPIO19
+    restore_mode: ALWAYS_OFF
 
 uart:
   baud_rate: 9600
@@ -87,6 +84,4 @@ uart:
     direction: RX
     dummy_receiver: true
     sequence:
-      - lambda: |-
-          id(has_received_frame) = true;
-          id(last_rx_ms) = millis();
+      - script.execute: hold_recent_call

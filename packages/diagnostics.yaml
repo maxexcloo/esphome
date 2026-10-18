@@ -15,13 +15,7 @@ sensor:
     id: sys_esp_temperature
     name: ESP Temperature
     filters:
-      - lambda: |-
-          static float last = NAN;
-          if (isnan(last) || abs(x - last) >= 5.0f) {
-            last = x;
-            return x;
-          }
-          return {};
+      - delta: 5.0
   - platform: uptime
     disabled_by_default: true
     entity_category: diagnostic

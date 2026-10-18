@@ -19,6 +19,7 @@ i2c:
   scl: GPIO23
   sda: GPIO22
 
+# Keep the onboard LED driven off instead of leaving it unmanaged.
 light:
   - platform: esp32_rmt_led_strip
     channel_colors: GRB
