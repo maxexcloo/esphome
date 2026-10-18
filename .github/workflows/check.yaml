@@ -26,7 +26,8 @@ jobs:
       - name: Set Up Shared Tools & Tasks
         uses: maxexcloo/dotfiles/.github/actions/mise@main
         with:
-          tools: actionlint node oxfmt pipx:esphome python ruff shellcheck updatecli uv
+          project-tools: true
+          tools: actionlint node oxfmt ruff shellcheck updatecli uv
       - name: Create Test Secrets
         run: |
           printf '%s\n' \
