@@ -216,21 +216,10 @@ sensor:
       filters:
         - throttle_with_priority: 1000ms
         - lambda: |-
-            static float last = NAN;
-            static uint32_t last_report_ms = 0;
-            if (!id(radar_has_target).state) {
-              if (isnan(last)) return {};
-              last = NAN;
-              last_report_ms = millis();
-              return NAN;
-            }
-            if (isnan(last) ||
-                abs(x - last) >= 5 || millis() - last_report_ms >= 60000) {
-              last = x;
-              last_report_ms = millis();
-              return x;
-            }
-            return {};
+            return id(radar_has_target).state ? x : NAN;
+        - or:
+            - delta: 5.0
+            - heartbeat: 60s
     g0:
       move_energy:
         name: Radar G0 Move Energy
@@ -282,72 +271,36 @@ sensor:
       filters:
         - throttle_with_priority: 1000ms
         - lambda: |-
-            static float last = NAN;
-            static uint32_t last_report_ms = 0;
-            if (!id(radar_has_moving_target).state) {
-              if (isnan(last)) return {};
-              last = NAN;
-              last_report_ms = millis();
-              return NAN;
-            }
-            if (isnan(last) ||
-                abs(x - last) >= 5 || millis() - last_report_ms >= 60000) {
-              last = x;
-              last_report_ms = millis();
-              return x;
-            }
-            return {};
+            return id(radar_has_moving_target).state ? x : NAN;
+        - or:
+            - delta: 5.0
+            - heartbeat: 60s
     moving_energy:
       id: radar_moving_energy
       name: Radar Move Energy
       filters:
         - throttle_with_priority: 1000ms
-        - lambda: |-
-            static float last = NAN;
-            static uint32_t last_report_ms = 0;
-            if (isnan(last) ||
-                abs(x - last) >= 5 || millis() - last_report_ms >= 60000) {
-              last = x;
-              last_report_ms = millis();
-              return x;
-            }
-            return {};
+        - or:
+            - delta: 5.0
+            - heartbeat: 60s
     still_distance:
       id: radar_still_distance
       name: Radar Still Distance
       filters:
         - throttle_with_priority: 1000ms
         - lambda: |-
-            static float last = NAN;
-            static uint32_t last_report_ms = 0;
-            if (!id(radar_has_still_target).state) {
-              if (isnan(last)) return {};
-              last = NAN;
-              last_report_ms = millis();
-              return NAN;
-            }
-            if (isnan(last) ||
-                abs(x - last) >= 5 || millis() - last_report_ms >= 60000) {
-              last = x;
-              last_report_ms = millis();
-              return x;
-            }
-            return {};
+            return id(radar_has_still_target).state ? x : NAN;
+        - or:
+            - delta: 5.0
+            - heartbeat: 60s
     still_energy:
       id: radar_still_energy
       name: Radar Still Energy
       filters:
         - throttle_with_priority: 1000ms
-        - lambda: |-
-            static float last = NAN;
-            static uint32_t last_report_ms = 0;
-            if (isnan(last) ||
-                abs(x - last) >= 5 || millis() - last_report_ms >= 60000) {
-              last = x;
-              last_report_ms = millis();
-              return x;
-            }
-            return {};
+        - or:
+            - delta: 5.0
+            - heartbeat: 60s
 
 switch:
   - platform: ld2410
