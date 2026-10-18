@@ -9,11 +9,11 @@ python = "3.14.8"
 
 # Development
 [tasks.check]
-depends = ["check:actions", "check:python", "check:updates"]
+depends = ["check:actions", "check:oxfmt", "check:python", "check:shell", "check:updates"]
 run = "bash scripts/check.sh"
 
 [tasks.fmt]
-depends = ["fmt:python"]
+depends = ["fmt:oxfmt", "fmt:python"]
 
 # Dependencies
 # Python follows the separate 3.14 compatibility policy.

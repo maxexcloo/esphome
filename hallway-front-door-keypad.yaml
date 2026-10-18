@@ -34,8 +34,8 @@ switchbot_keypad_bridge:
     - homeassistant.event:
         event: esphome.switchbot_keypad_unlock
         data:
-          index: !lambda 'return to_string(index);'
-          method: !lambda 'return method;'
+          index: !lambda "return to_string(index);"
+          method: !lambda "return method;"
   reset_button:
     name: Reset
 
