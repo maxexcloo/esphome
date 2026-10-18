@@ -56,5 +56,7 @@ encryption does not cover it.
 
 - `api_encryption_key`
 - `ota_password` — Biltong Box and Hallway Front Door Intercom only
+- `web_server_password`
+- `web_server_username`
 - `wifi_password`
 - `wifi_ssid`

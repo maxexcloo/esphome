@@ -5,23 +5,11 @@ substitutions:
 packages:
   base: !include packages/base.yaml
   diagnostics: !include packages/diagnostics.yaml
-
-esp32:
-  board: m5stack-atom
+  m5stack_atom: !include packages/m5stack-atom.yaml
 
 external_components:
   - source: github://pierluigizagaria/switchbot-keypad-bridge@51d5049080232f4a2b7fa843a9411e57af88416b
     components: [switchbot_keypad_bridge]
-
-# Keep the onboard LED driven off instead of leaving it unmanaged.
-light:
-  - platform: esp32_rmt_led_strip
-    channel_colors: GRB
-    chipset: sk6812
-    internal: true
-    name: Status LED
-    num_leds: 1
-    pin: GPIO27
 
 switchbot_keypad_bridge:
   keypad:

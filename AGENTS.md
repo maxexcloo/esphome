@@ -27,9 +27,9 @@
 
 ## Security
 
-- Do not enable `web_server` or browser OTA without authentication on devices that
-  can unlock or actuate anything. Set `web_server: ota: false` when an upstream
-  package adds browser OTA.
+- Every `web_server` requires authentication; include the shared `web-server`
+  package, which sets it, including on top of upstream packages.
+- Set `web_server: ota: false` when an upstream package adds browser OTA.
 
 ## Validation
 

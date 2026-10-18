@@ -1,11 +1,11 @@
 [vars]
 python_paths = "components"
-ruff_args = "--extend-select I"
 
 [tools]
 # Cache ESPHome and its compatible interpreter together under Mise.
 "pipx:esphome" = "2026.9.1"
-python = "3.14.8"
+# ESPHome 2026.9 requires Python below 3.15.
+python = "3.14"
 
 # Development
 [tasks.check]
@@ -16,7 +16,6 @@ run = "bash scripts/check.sh"
 depends = ["fmt:oxfmt", "fmt:python"]
 
 # Dependencies
-# Python follows the separate 3.14 compatibility policy.
 [tasks."dependencies:mise:check"]
 run = "mise upgrade --bump --dry-run --local --no-prune pipx:esphome"
 
