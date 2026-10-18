@@ -26,7 +26,7 @@ jobs:
       - name: Set Up Shared Tools & Tasks
         uses: maxexcloo/dotfiles/.github/actions/mise@main
         with:
-          tools: actionlint pipx:esphome python ruff updatecli uv
+          tools: actionlint node oxfmt pipx:esphome python ruff shellcheck updatecli uv
       - name: Create Test Secrets
         run: |
           printf '%s\n' \
@@ -37,3 +37,10 @@ jobs:
             >secrets.yaml
       - name: Run Checks
         run: mise run check
+      - name: Cache ESP-IDF
+        uses: actions/cache@v6
+        with:
+          key: esp-idf-${{ runner.os }}-${{ hashFiles('.mise.toml') }}
+          path: ~/.cache/esphome/idf
+      - name: Compile Bedroom Fan
+        run: mise exec -- esphome compile bedroom-fan.yaml
