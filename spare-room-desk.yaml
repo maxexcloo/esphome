@@ -9,6 +9,7 @@ packages:
   deskup_pro: github://smarthomeguys/deskup-pro-controller-rj12/deskup-pro-controller.yaml@d7e75ce1aba5330b1808bc5cf5af383fdebd9bbb
   base: !include packages/base.yaml
   diagnostics: !include packages/diagnostics.yaml
+  web_server: !include packages/web-server.yaml
 
 # Use the shared diagnostics entities instead of the upstream copies.
 button:
