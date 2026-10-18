@@ -19,7 +19,7 @@ mise install
 mise run check
 ```
 
-Format Python components with `mise run fmt`.
+Format files and Python components with `mise run fmt`.
 
 Compile affected devices after changing hardware, frameworks, external components,
 or lambdas:
@@ -28,8 +28,9 @@ or lambdas:
 mise exec -- esphome compile bedroom-fan.yaml
 ```
 
-Pull requests validate root `*.yaml` files, excluding `secrets.yaml`. Compile
-changed devices locally before uploading firmware; configuration checks do not test physical devices.
+Pull requests validate root `*.yaml` files, excluding `secrets.yaml`, and compile
+Bedroom Fan. Compile changed devices locally before uploading firmware; checks do
+not test physical devices.
 
 ## Layout
 
@@ -46,8 +47,8 @@ AGPL-3.0 - see [LICENSE](LICENSE).
 Native OTA updates use the API encryption key. Biltong Box and Hallway Front Door
 Intercom retain password OTA until their firmware reaches ESPHome 2026.9 or later;
 then remove their local `ota` overrides to inherit encryption from `base`.
-Apollo and desk packages also retain upstream browser OTA, which is separate from
-native OTA encryption.
+Apollo and desk configurations disable upstream browser OTA because native OTA
+encryption does not cover it.
 
 ## Secrets
 
