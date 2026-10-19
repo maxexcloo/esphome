@@ -1,5 +1,3 @@
 .device-builder*
 .esphome/
-.ruff_cache/
-__pycache__/
 secrets.yaml
