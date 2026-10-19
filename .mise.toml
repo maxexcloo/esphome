@@ -1,6 +1,3 @@
-[vars]
-python_paths = "components"
-
 [tools]
 # Cache ESPHome and its compatible interpreter together under Mise.
 "pipx:esphome" = "2026.9.1"
