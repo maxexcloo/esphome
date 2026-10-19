@@ -40,10 +40,29 @@ jobs:
             >secrets.yaml
       - name: Run Checks
         run: mise run check
+      - id: esphome
+        name: Read ESPHome Version
+        run: |
+          version=$(mise exec -- esphome version)
+          echo "version=${version#Version: }" >> "$GITHUB_OUTPUT"
+      # ESPHome pins its ESP-IDF release, so the framework changes only with ESPHome.
       - name: Cache ESP-IDF
         uses: actions/cache@v6
         with:
-          key: esp-idf-${{ runner.os }}-${{ hashFiles('.mise.toml') }}
+          key: esp-idf-${{ runner.os }}-${{ steps.esphome.outputs.version }}
           path: ~/.cache/esphome/idf
+      - name: Restore Build Objects
+        uses: actions/cache/restore@v6
+        with:
+          key: esphome-build-${{ runner.os }}-${{ steps.esphome.outputs.version }}-${{ github.sha }}
+          path: .esphome/build
+          restore-keys: esphome-build-${{ runner.os }}-${{ steps.esphome.outputs.version }}-
       - name: Compile Bedroom Fan
         run: mise exec -- esphome compile bedroom-fan.yaml
+      # Only main saves build objects so pull requests reuse them without growing the cache.
+      - name: Save Build Objects
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/cache/save@v6
+        with:
+          key: esphome-build-${{ runner.os }}-${{ steps.esphome.outputs.version }}-${{ github.sha }}
+          path: .esphome/build
