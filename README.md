@@ -1,6 +1,6 @@
 # ESPHome
 
-Device configurations for the homelab ESPHome devices.
+Configurations for the ESPHome devices in my homelab.
 
 ## Conventions
 
@@ -28,15 +28,15 @@ or lambdas:
 mise exec -- esphome compile bedroom-fan.yaml
 ```
 
-Pull requests validate root `*.yaml` files, excluding `secrets.yaml`, and compile
-Bedroom Fan. Compile changed devices locally before uploading firmware; checks do
-not test physical devices.
+Pull requests validate the root `*.yaml` files, except `secrets.yaml`, and
+compile Bedroom Fan. The checks don't test physical devices, so compile changed
+devices locally before uploading firmware.
 
 ## Layout
 
-- `components/` — custom ESPHome components.
-- `packages/` — shared configuration packages.
-- `*.yaml` — per-device configurations.
+- `components/`: custom ESPHome components.
+- `packages/`: shared configuration packages.
+- `*.yaml`: per-device configurations.
 
 ## Licence
 
@@ -45,17 +45,17 @@ AGPL-3.0 - see [LICENSE](LICENSE).
 ## OTA
 
 Native OTA updates use the API encryption key. Biltong Box and Hallway Front Door
-Intercom retain password OTA until their firmware reaches ESPHome 2026.9 or later;
-then remove their local `ota` overrides to inherit encryption from `base`.
-Apollo and desk configurations disable upstream browser OTA because native OTA
-encryption does not cover it.
+Intercom keep password OTA until their firmware is on ESPHome 2026.9 or later.
+After that, remove their local `ota` overrides so they inherit encryption from
+`base`. The Apollo and desk configurations turn off upstream browser OTA because
+native OTA encryption doesn't cover it.
 
 ## Secrets
 
 `secrets.yaml` requires these keys:
 
 - `api_encryption_key`
-- `ota_password` — Biltong Box and Hallway Front Door Intercom only
+- `ota_password` (Biltong Box and Hallway Front Door Intercom only)
 - `web_server_password`
 - `web_server_username`
 - `wifi_password`
