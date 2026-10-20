@@ -6,8 +6,14 @@ python = "3.14"
 
 # Development
 [tasks.check]
-depends = ["check:actions", "check:oxfmt", "check:python", "check:shell", "check:updates"]
 run = "bash scripts/check.sh"
+depends = [
+  "check:actions",
+  "check:oxfmt",
+  "check:python",
+  "check:shell",
+  "check:updates",
+]
 
 [tasks.fmt]
 depends = ["fmt:oxfmt", "fmt:python"]
