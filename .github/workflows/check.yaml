@@ -60,8 +60,8 @@ jobs:
       - name: Compile Bedroom Fan
         run: mise exec -- esphome compile bedroom-fan.yaml
       # Only main saves build objects so pull requests reuse them without growing the cache.
-      - name: Save Build Objects
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      - if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        name: Save Build Objects
         uses: actions/cache/save@v6
         with:
           key: esphome-build-${{ runner.os }}-${{ steps.esphome.outputs.version }}-${{ github.sha }}
