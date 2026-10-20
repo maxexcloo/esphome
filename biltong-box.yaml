@@ -92,12 +92,6 @@ number:
     step: 1
     unit_of_measurement: g
 
-# Keep password OTA until this device has been updated to ESPHome 2026.9 or later.
-ota:
-  - id: !extend ota_native
-    encryption: !remove
-    password: !secret ota_password
-
 psram:
   speed: 80MHz
 

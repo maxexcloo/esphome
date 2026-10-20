@@ -42,20 +42,11 @@ devices locally before uploading firmware.
 
 AGPL-3.0 - see [LICENSE](LICENSE).
 
-## OTA
-
-Native OTA updates use the API encryption key. Biltong Box and Hallway Front Door
-Intercom keep password OTA until their firmware is on ESPHome 2026.9 or later.
-After that, remove their local `ota` overrides so they inherit encryption from
-`base`. The Apollo and desk configurations turn off upstream browser OTA because
-native OTA encryption doesn't cover it.
-
 ## Secrets
 
 `secrets.yaml` requires these keys:
 
 - `api_encryption_key`
-- `ota_password` (Biltong Box and Hallway Front Door Intercom only)
 - `web_server_password`
 - `web_server_username`
 - `wifi_password`

@@ -40,12 +40,6 @@ esphome:
         id: recent_call
         state: false
 
-# Keep password OTA until this device has been updated to ESPHome 2026.9 or later.
-ota:
-  - id: !extend ota_native
-    encryption: !remove
-    password: !secret ota_password
-
 sensor:
   - platform: pulse_counter
     id: speaker_pulse_rate

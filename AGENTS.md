@@ -21,7 +21,6 @@
 - Keep custom ESPHome components in `components/`. Load shared C++ helpers as
   headers through `esphome: includes:`, as `biltong-box.yaml` does with
   `components/mini_scale.h`.
-- Follow the README OTA section when migrating devices off password OTA.
 - Document non-obvious hardware requirements, such as pin conflicts, bus
   addresses, or DIP-switch settings, next to the relevant component.
 

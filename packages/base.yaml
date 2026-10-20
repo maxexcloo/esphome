@@ -12,7 +12,6 @@ logger:
 ota:
   - platform: esphome
     encryption:
-    id: ota_native
 
 wifi:
   password: !secret wifi_password
