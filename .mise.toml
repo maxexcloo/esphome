@@ -9,6 +9,7 @@ python = "3.14"
 run = "bash scripts/check.sh"
 depends = [
   "check:actions",
+  "check:mise",
   "check:oxfmt",
   "check:python",
   "check:shell",
@@ -16,7 +17,7 @@ depends = [
 ]
 
 [tasks.fmt]
-depends = ["fmt:oxfmt", "fmt:python"]
+depends = ["fmt:mise", "fmt:oxfmt", "fmt:python"]
 
 # Dependencies
 [tasks."dependencies:mise:check"]
