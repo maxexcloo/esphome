@@ -2,4 +2,5 @@ web_server:
   version: 3
   auth:
     password: !secret web_server_password
+    type: digest
     username: !secret web_server_username

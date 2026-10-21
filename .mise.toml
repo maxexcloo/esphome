@@ -1,7 +1,7 @@
 [tools]
 # Cache ESPHome and its compatible interpreter together under Mise.
-"pipx:esphome" = "2026.9.1"
-# ESPHome 2026.9 requires Python below 3.15.
+"pipx:esphome" = "2026.10.0"
+# ESPHome requires Python below 3.15.
 python = "3.14"
 
 # Development
