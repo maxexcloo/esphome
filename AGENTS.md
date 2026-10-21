@@ -32,8 +32,8 @@
 
 ## Validation
 
-- Run `mise run check`, then `esphome compile <device>.yaml` for every device
-  affected by the change.
+- Run `mise run check`, then `mise exec -- esphome compile <device>.yaml` for every
+  device affected by the change.
 - Check OTA and `web_server` exposure when adding or changing packages.
 - Check Home Assistant impact before renaming devices or entities; names derive
   their entity IDs.

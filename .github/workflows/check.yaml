@@ -27,7 +27,7 @@ jobs:
         uses: maxexcloo/dotfiles/.github/actions/mise@main
         with:
           project-tools: true
-          tools: actionlint node@24 npm:renovate oxfmt ruff shellcheck uv
+          tools: actionlint jq node@24 npm:renovate oxfmt ruff shellcheck uv
       - name: Create Test Secrets
         run: |
           printf '%s\n' \
