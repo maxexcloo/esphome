@@ -14,6 +14,7 @@ depends = [
   "check:python",
   "check:shell",
   "check:updates",
+  "check:whitespace",
 ]
 
 [tasks.fmt]
