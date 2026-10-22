@@ -1,24 +1,4 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   extends: ["github>maxexcloo/dotfiles//renovate/default.json5"],
-  customManagers: [
-    {
-      customType: "regex",
-      datasourceTemplate: "git-refs",
-      description: "ESPHome remote packages pinned to a commit follow the default branch",
-      managerFilePatterns: ["/\\.yaml$/"],
-      matchStrings: [
-        "github://(?<depName>[^/@\\s]+/[^/@\\s]+)(?:/[^@\\s]*)?@(?<currentDigest>[a-f0-9]{40})",
-      ],
-      packageNameTemplate: "https://github.com/{{depName}}",
-    },
-  ],
-  packageRules: [
-    {
-      description: "Python follows the range ESPHome supports, so change it with ESPHome by hand",
-      enabled: false,
-      matchDepNames: ["python"],
-      matchManagers: ["mise"],
-    },
-  ],
 }

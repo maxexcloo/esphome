@@ -27,7 +27,7 @@ jobs:
         uses: maxexcloo/dotfiles/.github/actions/mise@main
         with:
           project-tools: true
-          tools: actionlint jq node@24 npm:renovate oxfmt ruff shellcheck uv
+          tools: actionlint jq node@24 npm:renovate oxfmt ruff uv
       - name: Create Test Secrets
         run: |
           printf '%s\n' \
@@ -39,29 +39,12 @@ jobs:
             >secrets.yaml
       - name: Run Checks
         run: mise run check
-      - id: esphome
-        name: Read ESPHome Version
-        run: |
-          version=$(mise exec -- esphome version)
-          echo "version=${version#Version: }" >> "$GITHUB_OUTPUT"
-      # ESPHome pins its ESP-IDF release, so the framework changes only with ESPHome.
-      - name: Cache ESP-IDF
+      - name: Cache ESPHome Builds
         uses: actions/cache@v6
         with:
-          key: esp-idf-${{ runner.os }}-${{ steps.esphome.outputs.version }}
-          path: ~/.cache/esphome/idf
-      - name: Restore Build Objects
-        uses: actions/cache/restore@v6
-        with:
-          key: esphome-build-${{ runner.os }}-${{ steps.esphome.outputs.version }}-${{ github.sha }}
-          path: .esphome/build
-          restore-keys: esphome-build-${{ runner.os }}-${{ steps.esphome.outputs.version }}-
+          key: esphome-${{ runner.os }}-${{ hashFiles('.mise.toml') }}
+          path: |
+            ~/.cache/esphome
+            .esphome/build
       - name: Compile Bedroom Fan
         run: mise exec -- esphome compile bedroom-fan.yaml
-      # Only main saves build objects so pull requests reuse them without growing the cache.
-      - if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        name: Save Build Objects
-        uses: actions/cache/save@v6
-        with:
-          key: esphome-build-${{ runner.os }}-${{ steps.esphome.outputs.version }}-${{ github.sha }}
-          path: .esphome/build

@@ -1,12 +1,10 @@
 [tools]
-# Cache ESPHome and its compatible interpreter together under Mise.
-"pipx:esphome" = "2026.10.0"
 # ESPHome requires Python below 3.15.
-python = "3.14"
+"pipx:esphome" = { version = "2026.10.0", uvx_args = "--python 3.14" }
 
 # Development
 [tasks.check]
-run = "bash scripts/check.sh"
+run = "esphome config ./*.yaml"
 depends = [
   "check:actions",
   "check:mise",
@@ -19,10 +17,3 @@ depends = [
 
 [tasks.fmt]
 depends = ["fmt:mise", "fmt:oxfmt", "fmt:python"]
-
-# Dependencies
-[tasks."dependencies:mise:check"]
-run = "mise upgrade --bump --dry-run --local --no-prune pipx:esphome"
-
-[tasks."dependencies:mise:update"]
-run = "mise upgrade --bump --local --no-prune pipx:esphome"
