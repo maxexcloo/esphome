@@ -1,4 +1,12 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   extends: ["github>maxexcloo/dotfiles//renovate/default.json5"],
+  packageRules: [
+    {
+      description: "Python follows the range ESPHome supports, so change it with ESPHome by hand",
+      enabled: false,
+      matchDepNames: ["python"],
+      matchManagers: ["mise"],
+    },
+  ],
 }
