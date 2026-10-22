@@ -1,10 +1,8 @@
 packages:
+  # renovate: datasource=git-refs depName=https://github.com/ApolloAutomation/MSR-2
   apolloautomation.msr-2: github://ApolloAutomation/MSR-2/Integrations/ESPHome/MSR-2_BLE.yaml@48f5d4f7847a3866fb135cbe8d4791fade3a5dfe
+  base: !include base.yaml
   web_server: !include web-server.yaml
-
-api:
-  encryption:
-    key: !secret api_encryption_key
 
 # Upstream's update entities install Apollo's stock image, which drops this
 # configuration, so firmware comes only from this repository.
@@ -12,17 +10,15 @@ button:
   - id: !remove update_firmware
 
 esphome:
-  friendly_name: ${name_friendly}
-  name: ${name}
   name_add_mac_suffix: false
   project:
     name: ApolloAutomation.MSR-2
 
 http_request: !remove
 
+# Use the authenticated OTA platform from base instead of the upstream entries.
 ota:
-  - id: !extend ota_esphome
-    encryption:
+  - id: !remove ota_esphome
   - id: !remove ota_managed
 
 # Upstream's on_boot still calls this script, so keep it as a no-op.
@@ -48,5 +44,3 @@ web_server:
 
 wifi:
   on_connect: !remove
-  password: !secret wifi_password
-  ssid: !secret wifi_ssid
