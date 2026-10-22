@@ -6,7 +6,7 @@ python = "3.14"
 
 # Development
 [tasks.check]
-run = "bash scripts/check.sh"
+run = "esphome config ./*.yaml"
 depends = [
   "check:actions",
   "check:mise",
