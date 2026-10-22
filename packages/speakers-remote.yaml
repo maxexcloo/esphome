@@ -1,10 +1,3 @@
-# NEC codes from the speakers' remote.
-substitutions:
-  config_ir_address: 0xFF00
-  config_ir_mute_command: 0xBB44
-  config_ir_volume_down_command: 0xE916
-  config_ir_volume_up_command: 0xE619
-
 packages:
   m5stack_atom: !include m5stack-atom.yaml
 
@@ -14,7 +7,6 @@ binary_sensor:
     filters:
       - delayed_on: 10ms
     on_press:
-      - script.execute: flash_red
       - script.execute: toggle_mute
     pin:
       inverted: true
@@ -23,49 +15,44 @@ binary_sensor:
     attribute: is_volume_muted
     entity_id: ${entity_speakers}
     id: current_mute_state
+  # NEC codes from the speakers' remote.
   - platform: remote_receiver
     internal: true
     name: IR Mute
     nec:
-      address: ${config_ir_address}
-      command: ${config_ir_mute_command}
+      address: 0xFF00
+      command: 0xBB44
     on_press:
-      - script.execute: flash_red
       - script.execute: toggle_mute
   - platform: remote_receiver
     internal: true
     name: IR Volume Down
     nec:
-      address: ${config_ir_address}
-      command: ${config_ir_volume_down_command}
+      address: 0xFF00
+      command: 0xE916
     on_press:
-      - script.execute: flash_red
       - script.execute: volume_down
   - platform: remote_receiver
     internal: true
     name: IR Volume Up
     nec:
-      address: ${config_ir_address}
-      command: ${config_ir_volume_up_command}
+      address: 0xFF00
+      command: 0xE619
     on_press:
-      - script.execute: flash_red
       - script.execute: volume_up
 
 button:
   - platform: template
     name: Mute
     on_press:
-      - script.execute: flash_red
       - script.execute: toggle_mute
   - platform: template
     name: Volume Down
     on_press:
-      - script.execute: flash_red
       - script.execute: volume_down
   - platform: template
     name: Volume Up
     on_press:
-      - script.execute: flash_red
       - script.execute: volume_up
 
 remote_receiver:
@@ -85,6 +72,7 @@ script:
           red: 100%
   - id: toggle_mute
     then:
+      - script.execute: flash_red
       - homeassistant.action:
           action: media_player.volume_mute
           data:
@@ -92,12 +80,14 @@ script:
             is_volume_muted: !lambda return !id(current_mute_state).state;
   - id: volume_down
     then:
+      - script.execute: flash_red
       - homeassistant.action:
           action: media_player.volume_down
           data:
             entity_id: ${entity_speakers}
   - id: volume_up
     then:
+      - script.execute: flash_red
       - homeassistant.action:
           action: media_player.volume_up
           data:
