@@ -44,5 +44,5 @@ AGPL-3.0 - see [LICENSE](LICENSE).
 ## Secrets
 
 `fnox.toml` maps each `!secret` key to a field of the `ESPHome` item in the
-Homelab 1Password vault. `scripts/esphome.sh` writes them to `secrets.yaml` for
+Automation 1Password vault, read through the global fnox `automation` provider. `scripts/esphome.sh` writes them to `secrets.yaml` for
 one ESPHome command and deletes it afterwards, so run ESPHome through it.
