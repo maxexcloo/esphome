@@ -1,5 +1,3 @@
-# Secret names match the `!secret` keys that scripts/esphome.sh writes to secrets.yaml. The global `automation`
-# provider (1Password Automation vault) resolves them.
 [secrets]
 api_encryption_key = { provider = "automation", value = "ESPHome/api_encryption_key" }
 web_server_password = { provider = "automation", value = "ESPHome/web_server_password" }
