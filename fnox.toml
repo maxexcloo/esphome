@@ -1,0 +1,11 @@
+# Secret names match the `!secret` keys that scripts/esphome.sh writes to secrets.yaml.
+[providers.homelab]
+type = "1password"
+vault = "Homelab"
+
+[secrets]
+api_encryption_key = { provider = "homelab", value = "ESPHome/api_encryption_key" }
+web_server_password = { provider = "homelab", value = "ESPHome/web_server_password" }
+web_server_username = { provider = "homelab", value = "ESPHome/web_server_username" }
+wifi_password = { provider = "homelab", value = "ESPHome/wifi_password" }
+wifi_ssid = { provider = "homelab", value = "ESPHome/wifi_ssid" }
