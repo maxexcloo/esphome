@@ -1,11 +1,8 @@
-# Secret names match the `!secret` keys that scripts/esphome.sh writes to secrets.yaml.
-[providers.homelab]
-type = "1password"
-vault = "Homelab"
-
+# Secret names match the `!secret` keys that scripts/esphome.sh writes to secrets.yaml. The global `automation`
+# provider (1Password Automation vault) resolves them.
 [secrets]
-api_encryption_key = { provider = "homelab", value = "ESPHome/api_encryption_key" }
-web_server_password = { provider = "homelab", value = "ESPHome/web_server_password" }
-web_server_username = { provider = "homelab", value = "ESPHome/web_server_username" }
-wifi_password = { provider = "homelab", value = "ESPHome/wifi_password" }
-wifi_ssid = { provider = "homelab", value = "ESPHome/wifi_ssid" }
+api_encryption_key = { provider = "automation", value = "ESPHome/api_encryption_key" }
+web_server_password = { provider = "automation", value = "ESPHome/web_server_password" }
+web_server_username = { provider = "automation", value = "ESPHome/web_server_username" }
+wifi_password = { provider = "automation", value = "ESPHome/wifi_password" }
+wifi_ssid = { provider = "automation", value = "ESPHome/wifi_ssid" }
