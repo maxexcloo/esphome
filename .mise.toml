@@ -19,10 +19,3 @@ depends = [
 
 [tasks.fmt]
 depends = ["fmt:mise", "fmt:oxfmt", "fmt:python"]
-
-# Dependencies
-[tasks."dependencies:mise:check"]
-run = "mise upgrade --bump --dry-run --local --no-prune pipx:esphome"
-
-[tasks."dependencies:mise:update"]
-run = "mise upgrade --bump --local --no-prune pipx:esphome"
