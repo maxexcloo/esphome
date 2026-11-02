@@ -52,16 +52,9 @@ sensor:
           call.set_speed(fan_speed);
           call.perform();
     on_clockwise:
-      - lambda: |-
-          int fan_speed = id(vornado).speed + 5;
-
-          if (fan_speed > 100) {
-            fan_speed = 100;
-          }
-
-          auto call = id(vornado).turn_on();
-          call.set_speed(fan_speed);
-          call.perform();
+      - fan.turn_on:
+          id: vornado
+          speed: !lambda return std::min(id(vornado).speed + 5, 100);
 
 spi:
   clk_pin: GPIO19
