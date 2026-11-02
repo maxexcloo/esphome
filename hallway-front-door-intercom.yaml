@@ -5,6 +5,7 @@ substitutions:
 packages:
   base: !include packages/base.yaml
   diagnostics: !include packages/diagnostics.yaml
+  m5stack_atom: !include packages/m5stack-atom.yaml
 
 binary_sensor:
   - platform: template
@@ -30,9 +31,6 @@ button:
       - switch.turn_on: unlock_relay
       - delay: 300ms
       - switch.turn_off: unlock_relay
-
-esp32:
-  board: m5stack-atom
 
 esphome:
   on_boot:
