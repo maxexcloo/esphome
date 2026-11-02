@@ -39,12 +39,11 @@ jobs:
             >secrets.yaml
       - name: Run Checks
         run: mise run check
-      - name: Cache ESPHome Builds
+      # Build outputs are not cached because the compile rebuilds them regardless.
+      - name: Cache ESPHome Toolchains
         uses: actions/cache@v6
         with:
           key: esphome-${{ runner.os }}-${{ hashFiles('.mise.toml') }}
-          path: |
-            ~/.cache/esphome
-            .esphome/build
+          path: ~/.cache/esphome
       - name: Compile Bedroom Fan
         run: mise exec -- esphome compile bedroom-fan.yaml
