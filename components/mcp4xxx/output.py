@@ -3,7 +3,7 @@ import esphome.config_validation as cv
 from esphome.components import output, spi
 from esphome.const import CONF_ID
 
-CODEOWNERS = ["@ellsclytn"]
+# Adapted from https://github.com/ellsclytn/esp-mcp4x-digipot (MIT).
 DEPENDENCIES = ["spi"]
 
 mcp4xxx_ns = cg.esphome_ns.namespace("mcp4xxx")
