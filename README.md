@@ -27,7 +27,7 @@ or lambdas:
 mise exec -- scripts/esphome.sh compile bedroom-fan.yaml
 ```
 
-Pull requests validate the root `*.yaml` files, except `secrets.yaml`, and
+CI validates the root `*.yaml` files, except `secrets.yaml`, and
 compile Bedroom Fan. The checks don't test physical devices, so compile changed
 devices locally before uploading firmware.
 
@@ -37,13 +37,13 @@ devices locally before uploading firmware.
 - `packages/`: shared configuration packages.
 - `*.yaml`: per-device configurations.
 
-## Licence
-
-AGPL-3.0 - see [LICENSE](LICENSE).
-
 ## Secrets
 
 `fnox.toml` maps each `!secret` key to a field of the `ESPHome` item in the
 Automation 1Password vault, read through the global fnox `automation` provider.
 `scripts/esphome.sh` writes them to `secrets.yaml` for one ESPHome command and
 deletes it afterwards, so run ESPHome through it.
+
+## Licence
+
+AGPL-3.0 - see [LICENSE](LICENSE).
