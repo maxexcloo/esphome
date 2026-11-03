@@ -27,9 +27,7 @@ or lambdas:
 mise run esphome compile bedroom-fan.yaml
 ```
 
-CI validates the root `*.yaml` files, except `secrets.yaml`, and
-compiles Bedroom Fan. The checks don't test physical devices, so compile changed
-devices locally before uploading firmware.
+CI validates every device configuration and compiles Bedroom Fan.
 
 ## Layout
 

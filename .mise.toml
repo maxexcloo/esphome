@@ -6,7 +6,7 @@ python = "3.14"
 
 [tasks.esphome]
 description = "Run ESPHome With Secrets From fnox"
-# Write secrets.yaml for this command only; an existing file (as in CI) is used as is.
+# An existing secrets.yaml, as in CI, is used as is.
 run = """
 if [ ! -e secrets.yaml ]; then
   trap 'rm -f secrets.yaml' EXIT

@@ -18,8 +18,6 @@ i2c_device:
     i2c_id: scale_bus_${scale}
 
 sensor:
-  # Unit Mini Scales returns its calibrated weight in grams as a
-  # little-endian IEEE-754 float from register 0x10.
   - platform: template
     device_class: weight
     lambda: return mini_scale::read_weight(id(scale_${scale}));
