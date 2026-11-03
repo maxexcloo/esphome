@@ -28,6 +28,3 @@ depends = [
   "check:updates",
   "check:whitespace",
 ]
-
-[tasks.fmt]
-depends = ["fmt:mise", "fmt:oxfmt", "fmt:python"]
