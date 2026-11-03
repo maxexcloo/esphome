@@ -13,7 +13,8 @@ if [ ! -e secrets.yaml ]; then
   trap 'exit 130' INT TERM
   (umask 077 && fnox export --format json | jq .secrets >secrets.yaml)
 fi
-esphome"""
+esphome
+"""
 
 # Development
 [tasks.check]
