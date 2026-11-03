@@ -24,11 +24,11 @@ Compile affected devices after changing hardware, frameworks, external component
 or lambdas:
 
 ```shell
-mise exec -- scripts/esphome.sh compile bedroom-fan.yaml
+mise run esphome compile bedroom-fan.yaml
 ```
 
 CI validates the root `*.yaml` files, except `secrets.yaml`, and
-compile Bedroom Fan. The checks don't test physical devices, so compile changed
+compiles Bedroom Fan. The checks don't test physical devices, so compile changed
 devices locally before uploading firmware.
 
 ## Layout
@@ -41,8 +41,9 @@ devices locally before uploading firmware.
 
 `fnox.toml` maps each `!secret` key to a field of the `ESPHome` item in the
 Automation 1Password vault, read through the global fnox `automation` provider.
-`scripts/esphome.sh` writes them to `secrets.yaml` for one ESPHome command and
-deletes it afterwards, so run ESPHome through it.
+The `esphome` Mise task writes them to `secrets.yaml` for one ESPHome command and
+deletes it afterwards, so run ESPHome through it. The Home Assistant ESPHome
+add-on keeps its own `secrets.yaml`, so configurations use `!secret`.
 
 ## Licence
 
