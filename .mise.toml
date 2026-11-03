@@ -7,14 +7,14 @@ python = "3.14"
 [tasks.esphome]
 description = "Run ESPHome With Secrets From fnox"
 # An existing secrets.yaml, as in CI, is used as is.
-run = """
+run = '''
 if [ ! -e secrets.yaml ]; then
   trap 'rm -f secrets.yaml' EXIT
   trap 'exit 130' INT TERM
   (umask 077 && fnox export --format json | jq .secrets >secrets.yaml)
 fi
 esphome
-"""
+'''
 
 # Development
 [tasks.check]
