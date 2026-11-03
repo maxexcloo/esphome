@@ -12,14 +12,12 @@ sensor:
   - platform: internal_temperature
     disabled_by_default: true
     entity_category: diagnostic
-    id: sys_esp_temperature
     name: ESP Temperature
     filters:
       - delta: 5.0
   - platform: uptime
     disabled_by_default: true
     entity_category: diagnostic
-    id: sys_uptime
     name: Uptime
   - platform: wifi_signal
     disabled_by_default: true

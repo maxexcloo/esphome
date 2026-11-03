@@ -11,7 +11,6 @@ binary_sensor:
   - platform: template
     device_class: sound
     icon: mdi:volume-high
-    id: intercom_audio
     name: Intercom Audio
     filters:
       - delayed_off: 3s
@@ -25,7 +24,6 @@ binary_sensor:
 button:
   - platform: template
     icon: mdi:door-open
-    id: unlock_door
     name: Unlock Door
     on_press:
       - switch.turn_on: unlock_relay
