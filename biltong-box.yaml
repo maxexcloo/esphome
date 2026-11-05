@@ -1,6 +1,6 @@
 substitutions:
   name: biltong-box
-  name_friendly: Biltong Box
+  name_friendly: Portable Biltong Box
 
 packages:
   base: !include packages/base.yaml
