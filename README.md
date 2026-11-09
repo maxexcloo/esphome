@@ -27,21 +27,11 @@ or lambdas:
 mise run esphome compile bedroom-fan.yaml
 ```
 
-CI validates every device configuration and compiles Bedroom Fan.
-
-## Layout
-
-- `components/`: custom ESPHome components.
-- `packages/`: shared configuration packages.
-- `*.yaml`: per-device configurations.
-
 ## Secrets
 
-`fnox.toml` maps each `!secret` key to a field of the `ESPHome` item in the
-Automation 1Password vault, read through the global fnox `automation` provider.
-The `esphome` Mise task writes them to `secrets.yaml` for one ESPHome command and
-deletes it afterwards, so run ESPHome through it. The Home Assistant ESPHome
-add-on keeps its own `secrets.yaml`, so configurations use `!secret`.
+Run ESPHome through `mise run esphome` to load secrets from the `ESPHome` item
+in the Automation 1Password vault through the shared fnox `automation` provider.
+The Home Assistant ESPHome add-on keeps its own `secrets.yaml`.
 
 ## Licence
 
