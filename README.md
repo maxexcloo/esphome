@@ -2,10 +2,6 @@
 
 Configurations for the ESPHome devices in my homelab.
 
-## Conventions
-
-See `AGENTS.md`.
-
 ## Development
 
 Install the [shared Mise configuration](https://github.com/maxexcloo/dotfiles#shared-tools--tasks)
