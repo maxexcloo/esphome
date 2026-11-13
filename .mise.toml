@@ -4,18 +4,6 @@
 # ESPHome requires Python below 3.15.
 python = "3.14"
 
-[tasks.esphome]
-description = "Run ESPHome With Secrets From fnox"
-# An existing secrets.yaml, as in CI, is used as is.
-run = '''
-if [ ! -e secrets.yaml ]; then
-  trap 'rm -f secrets.yaml' EXIT
-  trap 'exit 130' INT TERM
-  (umask 077 && fnox export --format json | jq .secrets >secrets.yaml)
-fi
-esphome
-'''
-
 # Development
 [tasks.check]
 run = "mise run esphome config ./*.yaml"
@@ -28,3 +16,16 @@ depends = [
   "check:updates",
   "check:whitespace",
 ]
+
+[tasks.esphome]
+description = "Run ESPHome With Secrets From fnox"
+# An existing secrets.yaml, as in CI, is used as is.
+run = '''
+if [ ! -e secrets.yaml ]; then
+  trap 'rm -f secrets.yaml' EXIT
+  trap 'exit 130' INT TERM
+  secrets=$(fnox export --format json)
+  (umask 077 && printf '%s\n' "$secrets" | jq .secrets >secrets.yaml)
+fi
+esphome
+'''
