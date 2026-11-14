@@ -7,7 +7,7 @@ substitutions:
 packages:
   # Apply local base settings after the upstream defaults.
   # renovate: datasource=git-refs depName=https://github.com/smarthomeguys/deskup-pro-controller-rj12
-  deskup_pro: github://smarthomeguys/deskup-pro-controller-rj12/deskup-pro-controller.yaml@54d7740c5615fe604873eba4ccf6e1bc12dbbab9
+  deskup_pro: github://smarthomeguys/deskup-pro-controller-rj12/deskup-pro-controller.yaml@99c3bb08435690c8415bd392ded7b8dd263ba0d2
   base: !include packages/base.yaml
   diagnostics: !include packages/diagnostics.yaml
   web_server: !include packages/web-server.yaml
