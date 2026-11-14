@@ -15,8 +15,8 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
-  check:
-    name: Check
+  checks:
+    name: Run Checks
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -28,7 +28,8 @@ jobs:
         with:
           project-tools: true
           tools: actionlint jq node@24 npm:renovate oxfmt ruff shellcheck uv
-      - name: Create Test Secrets
+      - &test-secrets
+        name: Create Test Secrets
         run: |
           printf '%s\n' \
             "api_encryption_key: $(openssl rand -base64 32)" \
@@ -39,11 +40,58 @@ jobs:
             >secrets.yaml
       - name: Run Checks
         run: mise run check
+
+  prepare:
+    name: Prepare
+    runs-on: ubuntu-latest
+    outputs:
+      devices: ${{ steps.devices.outputs.devices }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - id: devices
+        name: Discover Devices
+        run: echo "devices=$(git ls-files ':(glob)*.yaml' | jq -Rnc '[inputs]')" >> "$GITHUB_OUTPUT"
+
+  compile:
+    name: Compile ${{ matrix.device }}
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        device: ${{ fromJSON(needs.prepare.outputs.devices) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Set Up Shared Tools & Tasks
+        uses: maxexcloo/dotfiles/.github/actions/mise@main
+        with:
+          project-tools: true
+          tools: jq uv
+      - *test-secrets
       # Build outputs are not cached because the compile rebuilds them regardless.
       - name: Cache ESPHome Toolchains
         uses: actions/cache@v6
         with:
           key: esphome-${{ runner.os }}-${{ hashFiles('.mise.toml') }}
           path: ~/.cache/esphome
-      - name: Compile Bedroom Fan
-        run: mise exec -- esphome compile bedroom-fan.yaml
+      - name: Compile Device
+        run: mise exec -- esphome compile "$DEVICE"
+        env:
+          DEVICE: ${{ matrix.device }}
+
+  check:
+    if: always()
+    name: Check
+    runs-on: ubuntu-latest
+    needs: [checks, prepare, compile]
+    steps:
+      - name: Verify Checks & Compiles
+        run: test "$FAILED" = false
+        env:
+          FAILED: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
