@@ -27,6 +27,8 @@
 - Every `web_server` requires authentication; include the shared `web-server`
   package, which sets it, including on top of upstream packages.
 - Set `web_server: ota: false` when an upstream package adds browser OTA.
+- Remove upstream `captive_portal`, `esp32_improv` and fallback `wifi: ap`;
+  captive portal OTA ignores `web_server` authentication.
 
 ## Validation
 
