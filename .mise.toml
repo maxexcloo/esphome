@@ -24,7 +24,7 @@ run = '''
 if [ ! -e secrets.yaml ]; then
   trap 'rm -f secrets.yaml' EXIT
   trap 'exit 130' INT TERM
-  secrets=$(fnox export --format json)
+  secrets=$(op-connect fnox export --format json)
   (umask 077 && printf '%s\n' "$secrets" | jq .secrets >secrets.yaml)
 fi
 esphome
