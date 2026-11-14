@@ -16,8 +16,15 @@ packages:
 button:
   - id: !remove button_reboot
 
+# Captive portal OTA ignores web_server auth, and the fallback AP uses a public
+# password.
+captive_portal: !remove
+
 esp32:
   board: m5stack-atom
+
+# Upstream's BLE Improv accepts Wi-Fi credentials without authorisation.
+esp32_improv: !remove
 
 esphome:
   name_add_mac_suffix: false
@@ -46,3 +53,6 @@ update:
 # Disable upstream's plaintext browser OTA, which OTA encryption does not cover.
 web_server:
   ota: false
+
+wifi:
+  ap: !remove

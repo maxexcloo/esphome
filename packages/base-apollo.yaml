@@ -9,6 +9,9 @@ packages:
 button:
   - id: !remove update_firmware
 
+# Captive portal OTA ignores web_server auth, and the fallback AP has no password.
+captive_portal: !remove
+
 esphome:
   name_add_mac_suffix: false
   project:
@@ -43,4 +46,5 @@ web_server:
   ota: false
 
 wifi:
+  ap: !remove
   on_connect: !remove
