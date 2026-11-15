@@ -35,5 +35,7 @@
 - Compile every device the change affects, as described in `README.md`.
 - Check Home Assistant impact before renaming devices or entities; names derive
   their entity IDs.
+- If Home Assistant OTA updates fail with "Device rejected the handshake"
+  while local uploads work, the add-on's own `secrets.yaml` has drifted.
 - Treat expected board pin warnings separately from configuration or compile
   failures.
