@@ -3,10 +3,9 @@
   extends: ["github>maxexcloo/dotfiles//renovate/default.json5"],
   packageRules: [
     {
-      description: "Python follows the range ESPHome supports, so change it with ESPHome by hand",
-      enabled: false,
+      description: "Keep Python within the range ESPHome supports",
+      allowedVersions: "<3.15",
       matchDepNames: ["python"],
-      matchManagers: ["mise"],
     },
   ],
 }
