@@ -17,8 +17,6 @@ static constexpr uint8_t MCP4XXX_TERMINALS_DISCONNECTED = 0xF8;
 static constexpr uint8_t MCP4XXX_WIPER0_ADDRESS = 0x00;
 
 void MCP4XXX::setup() {
-  ESP_LOGCONFIG(TAG, "Setting up MCP4XXX...");
-
   this->spi_setup();
   if (!this->spi_is_ready()) {
     ESP_LOGE(TAG, "SPI interface is unavailable");

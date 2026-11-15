@@ -39,8 +39,8 @@ light:
     pin: GPIO27
     rgb_order: !remove
 
+# Use the authenticated OTA platform from base instead of the upstream entry.
 ota:
-  # Use the authenticated OTA platform from base instead of the upstream entry.
   - id: !remove ota_esphome
 
 sensor:

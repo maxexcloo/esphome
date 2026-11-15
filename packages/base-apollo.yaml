@@ -35,8 +35,8 @@ select:
   - id: !remove firmware_channel
 
 sensor:
-  - name: WiFi Signal
-    id: !extend wifi_signal_db
+  - id: !extend wifi_signal_db
+    name: WiFi Signal
 
 update:
   - id: !remove update_http_request

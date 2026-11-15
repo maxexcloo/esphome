@@ -11,11 +11,11 @@ binary_sensor:
   - platform: template
     device_class: sound
     icon: mdi:volume-high
+    lambda: |-
+      return id(speaker_pulse_rate).state > 300.0;
     name: Intercom Audio
     filters:
       - delayed_off: 3s
-    lambda: |-
-      return id(speaker_pulse_rate).state > 300.0;
   - platform: template
     icon: mdi:bell-ring
     id: recent_call
@@ -36,15 +36,6 @@ esphome:
         id: recent_call
         state: false
 
-sensor:
-  - platform: pulse_counter
-    id: speaker_pulse_rate
-    name: Speaker Activity
-    update_interval: 1s
-    pin:
-      mode: INPUT_PULLUP
-      number: GPIO21
-
 script:
   # An RS-485 frame indicates a call; retain it for ten minutes after the most
   # recent frame so Home Assistant cannot miss the event.
@@ -58,6 +49,15 @@ script:
       - binary_sensor.template.publish:
           id: recent_call
           state: false
+
+sensor:
+  - platform: pulse_counter
+    id: speaker_pulse_rate
+    name: Speaker Activity
+    update_interval: 1s
+    pin:
+      mode: INPUT_PULLUP
+      number: GPIO21
 
 switch:
   - platform: gpio
