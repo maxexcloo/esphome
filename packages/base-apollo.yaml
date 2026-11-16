@@ -1,6 +1,6 @@
 packages:
   # renovate: datasource=git-refs depName=https://github.com/ApolloAutomation/MSR-2
-  apolloautomation.msr-2: github://ApolloAutomation/MSR-2/Integrations/ESPHome/MSR-2_BLE.yaml@48f5d4f7847a3866fb135cbe8d4791fade3a5dfe
+  apolloautomation.msr-2: github://ApolloAutomation/MSR-2/Integrations/ESPHome/MSR-2_BLE.yaml@c1e97725a1f9602c1d9fe31adf78904578d9d6dc
   base: !include base.yaml
   web_server: !include web-server.yaml
 
