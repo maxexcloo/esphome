@@ -12,12 +12,12 @@ Install the pinned tools and run all checks with Mise:
 ```shell
 mise install
 mise run check
+mise run esphome config $(git ls-files ':(glob)*.yaml')
 ```
 
 Format files and Python components with `mise run fmt`.
 
-Compile affected devices after changing hardware, frameworks, external components,
-or lambdas:
+Compile every affected device after changing its configuration:
 
 ```shell
 mise run esphome compile bedroom-fan.yaml
