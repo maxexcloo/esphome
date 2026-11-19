@@ -26,18 +26,7 @@ jobs:
       - name: Set Up Shared Tools & Tasks
         uses: maxexcloo/dotfiles/.github/actions/mise@main
         with:
-          project-tools: true
-          tools: actionlint jq node@24 npm:renovate oxfmt ruff uv
-      - &test-secrets
-        name: Create Test Secrets
-        run: |
-          printf '%s\n' \
-            "api_encryption_key: $(openssl rand -base64 32)" \
-            'web_server_password: test-password' \
-            'web_server_username: test' \
-            'wifi_password: test-password' \
-            'wifi_ssid: test-network' \
-            >secrets.yaml
+          tools: actionlint node@24 npm:renovate oxfmt ruff
       - name: Run Checks
         run: mise run check
 
@@ -73,7 +62,15 @@ jobs:
         with:
           project-tools: true
           tools: jq uv
-      - *test-secrets
+      - name: Create Test Secrets
+        run: |
+          printf '%s\n' \
+            "api_encryption_key: $(openssl rand -base64 32)" \
+            'web_server_password: test-password' \
+            'web_server_username: test' \
+            'wifi_password: test-password' \
+            'wifi_ssid: test-network' \
+            >secrets.yaml
       # Build outputs are not cached because the compile rebuilds them regardless.
       - name: Cache ESPHome Toolchains
         uses: actions/cache@v6
